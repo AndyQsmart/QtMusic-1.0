@@ -165,9 +165,7 @@ QQueue<MusicInfo> Data::getMusicList(QString listName)
 
 void Data::addMusicsToEnd(QString listName, QQueue<MusicInfo> musics)
 {
-    MusicThread *thread = new MusicThread(listName, musics);
-    thread->start();
-    /*
+    QSqlDatabase::database().transaction();
     tryConnectList(listName);
     int cnt;
     QSqlQuery query;
@@ -197,7 +195,7 @@ void Data::addMusicsToEnd(QString listName, QQueue<MusicInfo> musics)
                     "where name = '%2';").arg(cnt).arg(listName);
     qDebug() << str << endl;
     query.exec(str);
-    */
+    QSqlDatabase::database().commit();
 }
 
 void Data::deleteMusic(QString listName, int row)
@@ -334,50 +332,4 @@ void Data::changePlayMode(int mode)
         qDebug() << cmd << endl;
     else
         qDebug() << "fail " << cmd << endl;
-}
-
-MusicThread::MusicThread(QString listName, QQueue<MusicInfo> musics)
-{
-    this->listName = listName;
-    this->musics = musics;
-}
-
-void MusicThread::run()
-{
-    QSqlQuery query;
-    if (!query.exec("select * from "+listName+";"))
-    {
-        if (!query.exec("CREATE TABLE "+listName+"("
-                        "dir VARCHAR,"
-                        "name VARCHAR,"
-                        "artist VARCHAR,"
-                        "id int)")) {}
-    }
-    int cnt;
-    QString str =
-            QString("select * from listlist where name='%1';").arg(listName);
-    query.exec(str);
-    if (query.next())
-        cnt = query.value(2).toInt();
-    else
-        cnt = 0;
-    qDebug() << cnt << endl;
-    MusicInfo musicInfo;
-    while (!musics.empty())
-    {
-        musicInfo = musics.front();
-        QString str
-                = QString("insert into "
-                          "%1(dir, name, artist, id) "
-                          "values('%2', '%3', '%4', %5);").arg(listName).arg(musicInfo.getDir()).arg(musicInfo.getName()).arg(musicInfo.getArtist()).arg(cnt);
-        query.exec(str);
-        //qDebug() << str << endl;
-        cnt++;
-        musics.pop_front();
-    }
-    query.exec("select * from listlist;");
-    str = QString("update listlist set count = %1 "
-                    "where name = '%2';").arg(cnt).arg(listName);
-    qDebug() << str << endl;
-    query.exec(str);
 }

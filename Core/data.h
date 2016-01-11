@@ -3,8 +3,6 @@
 
 #include "Core/musicinfo.h"
 #include <QString>
-#include <QThread>
-#include <QQueue>
 
 class Data
 {
@@ -34,21 +32,6 @@ class Data
         static void changeSoundLevel(int voice);
         static int getPlayMode();
         static void changePlayMode(int mode);
-};
-
-class MusicThread : public QThread
-{
-        Q_OBJECT
-
-    public:
-        MusicThread(QString listName, QQueue<MusicInfo> musics);
-
-    protected:
-        void run();
-
-    private:
-        QString listName;
-        QQueue<MusicInfo> musics;
 };
 
 #endif // DATA_H
