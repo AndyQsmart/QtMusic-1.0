@@ -4,7 +4,7 @@
 #include <QWidget>
 
 //PADDING用于设置改变窗口时鼠标侦测的边距
-#define PADDING 2
+#define PADDING 4
 enum Direction
 {
     UP,

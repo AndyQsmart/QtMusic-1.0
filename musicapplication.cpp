@@ -1,8 +1,10 @@
 #include "musicapplication.h"
+#include <QIcon>
 
 MusicApplication::MusicApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 {
+    //setWindowIcon(QIcon(":/icons/res/icons/app_icon"));
     sharedMemory.setKey("QtMusic");
     if (sharedMemory.attach())
         hasRun = true;

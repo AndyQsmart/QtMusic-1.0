@@ -11,6 +11,7 @@
 #include <QSplitter>
 #include <QStackedWidget>
 #include <QFileDialog>
+#include <QStackedWidget>
 
 #include <QtDebug>
 
@@ -56,7 +57,7 @@ MusicPage::MusicPage(QWidget *parent) : QWidget(parent)
     leftWidget->setMinimumWidth(80);
     leftWidget->setMaximumWidth(120);
 
-    musicLists = new MyStackedWidget;
+    musicLists = new QStackedWidget;
     musicLists->setMinimumWidth(80);
     musicLists->setMaximumWidth(420);
 
@@ -77,8 +78,6 @@ MusicPage::MusicPage(QWidget *parent) : QWidget(parent)
     mainLayout->setMargin(1);
 
     this->setLayout(mainLayout);
-
-    dealMouse();
 }
 
 void MusicPage::addMusic(QString name, QString artist)
@@ -207,17 +206,7 @@ void MusicPage::removeAllMusics()
     emit removeAllMusics(this->getCurrentList());
 }
 
-void MusicPage::dealMouse()
-{
-    connect(musicLists, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
-}
-
-MyStackedWidget::MyStackedWidget(QWidget *parent)
-    : QStackedWidget(parent)
-{
-}
-
-void MyStackedWidget::enterEvent(QEvent *e)//鼠标进入事件
+void MusicPage::enterEvent(QEvent *e)//鼠标进入事件
 {
     emit mouseEnter();
 }

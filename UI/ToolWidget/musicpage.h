@@ -2,12 +2,11 @@
 #define MUSICPAGE_H
 
 #include <QWidget>
-#include <QStackedWidget>
 #include <QQueue>
 #include "Core/musicinfo.h"
 
 class ListList;
-class MyStackedWidget;
+class QStackedWidget;
 class QPushButton;
 
 class MusicPage : public QWidget
@@ -24,7 +23,7 @@ class MusicPage : public QWidget
         void setHighLight(int list, int index);
 
     protected:
-        void dealMouse();
+        void enterEvent(QEvent *e);//鼠标进入事件
         void addMusic(QString name, QString artist);
 
     signals:
@@ -50,20 +49,7 @@ class MusicPage : public QWidget
     private:
         QPushButton *addButton;
         ListList *listList;
-        MyStackedWidget *musicLists;
-};
-
-class MyStackedWidget : public QStackedWidget
-{
-        Q_OBJECT
-    public:
-        MyStackedWidget(QWidget *parent = 0);
-
-    signals:
-        void mouseEnter();
-
-    private:
-        void enterEvent(QEvent *e);//鼠标进入事件
+        QStackedWidget *musicLists;
 };
 
 #endif // MUSICPAGE_H
