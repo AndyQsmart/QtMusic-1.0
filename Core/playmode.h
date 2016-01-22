@@ -11,4 +11,3 @@ enum Mode
 };
 
 #endif // PLAYMODE
-

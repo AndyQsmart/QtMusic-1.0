@@ -255,4 +255,3 @@ void MusicWindow::aboutQtMusic()
 {
     QMessageBox::about(this, tr("关于QtMusic"), tr("QtMusic，感谢您的使用！\n此软件仅模仿酷我音乐制作，请勿用于任何非法途径。"));
 }
-

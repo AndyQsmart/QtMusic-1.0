@@ -227,4 +227,3 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     }
     QWidget::mouseMoveEvent(event);
 }
-

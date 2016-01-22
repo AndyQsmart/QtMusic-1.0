@@ -10,6 +10,7 @@ ListList::ListList(QWidget *parent)
     : QTableWidget(parent)
 {
     this->setFrameStyle(QFrame::NoFrame);//去边框
+    this->setSelectionMode(QAbstractItemView::NoSelection);
     this->setStyleSheet("background:rgba(244,244,244,40%);"
                         "selection-background-color:rgba(128,128,128,40%);"
                         "selection-color:rgba(255,255,255,100%)");
@@ -192,4 +193,3 @@ void ListList::contextMenuEvent(QContextMenuEvent *event)
         emit rightClicked();
     QWidget::contextMenuEvent(event);
 }
-

@@ -4,4 +4,3 @@ MusicInfo::MusicInfo()
 {
 
 }
-

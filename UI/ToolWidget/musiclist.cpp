@@ -192,4 +192,3 @@ void MusicList::contextMenuEvent(QContextMenuEvent *event)
         emit rightClicked();
     QWidget::contextMenuEvent(event);
 }
-
