@@ -27,7 +27,7 @@ BottomBar::BottomBar(QWidget *parent) : QWidget(parent)
     postionSlider = new SliderWidget;
     connect(postionSlider, SIGNAL(changeTo(qreal)), this, SLOT(postionChanged(qreal)));
 
-    coverButton = new IconButton(":/icons/res/icons/cover_btn");
+    coverButton = new IconButton(":/images/icons/coverbutton_icon");
 
     QPalette palette;//调色板
     palette.setColor(QPalette::WindowText, QColor(255, 255, 255));//设置调色板参数为按钮字体色，RGB颜色为白色
@@ -52,17 +52,17 @@ BottomBar::BottomBar(QWidget *parent) : QWidget(parent)
     leftLayout->addLayout(labelLayout);
     leftLayout->setMargin(0);
 
-    preButton = new IconButton(":/icons/res/icons/pre_btn");
+    preButton = new IconButton(":/images/icons/prebutton_icon");
     connect(preButton, SIGNAL(clicked()), this, SIGNAL(playPre()));
 
-    playButton = new IconButton(":/icons/res/icons/pause_btn");
+    playButton = new IconButton(":/images/icons/pausebutton_icon");
     connect(playButton, SIGNAL(clicked()), this, SIGNAL(tryplay()));
 
-    nextButton = new IconButton(":/icons/res/icons/next_btn");
+    nextButton = new IconButton(":/images/icons/nextbutton_icon");
     connect(nextButton, SIGNAL(clicked()), this, SIGNAL(playNext()));
 
     nosound = false;
-    soundButton = new IconButton(":/icons/res/icons/sound_btn");
+    soundButton = new IconButton(":/images/icons/soundbutton_icon");
     connect(soundButton, SIGNAL(clicked()), this, SLOT(clickSoundButton()));
 
     voiceSlider = new VoiceSlider;
@@ -90,7 +90,7 @@ BottomBar::BottomBar(QWidget *parent) : QWidget(parent)
     modeLabel->setAlignment(Qt::AlignCenter);
     modeLabel->setFixedWidth(84);
     modeLabel->setPalette(palette);
-    modeButton = new IconButton(":/icons/res/icons/turnmusic_icon.png");
+    modeButton = new IconButton(":/images/icons/turnmusic_icon");
     MyMenu *menu = new MyMenu(this);
     QAction *onemusic = new QAction("单曲播放", menu);
     QAction *onerep = new QAction("单曲循环", menu);
@@ -194,12 +194,12 @@ void BottomBar::setSoundLevel(int sound)
 
 void BottomBar::setPlay()
 {
-    playButton->setTheIcon(":/icons/res/icons/play_btn");
+    playButton->setTheIcon(":/images/icons/playbutton_icon");
 }
 
 void BottomBar::setPause()
 {
-    playButton->setTheIcon(":/icons/res/icons/pause_btn");
+    playButton->setTheIcon(":/images/icons/pausebutton_icon");
 }
 
 void BottomBar::postionChanged(qreal pos)
@@ -234,7 +234,7 @@ void BottomBar::changePostionTo(qint64 pos)
 void BottomBar::voiceChanged(qreal pos)
 {
     nosound = false;
-    soundButton->setTheIcon(":/icons/res/icons/sound_btn");
+    soundButton->setTheIcon(":/images/icons/soundbutton_icon");
     emit setVoice((int)(pos*100));
 }
 
@@ -243,13 +243,13 @@ void BottomBar::clickSoundButton()
     if (nosound)
     {
         nosound = false;
-        soundButton->setTheIcon(":/icons/res/icons/sound_btn");
+        soundButton->setTheIcon(":/images/icons/soundbutton_icon");
         emit setVoice((int)(voiceSlider->getCurrentPostion()*100));
     }
     else
     {
         nosound = true;
-        soundButton->setTheIcon(":/icons/res/icons/nosound_btn");
+        soundButton->setTheIcon(":/images/icons/nosoundbutton_icon");
         emit setVoice(0);
     }
 }
@@ -258,7 +258,7 @@ void BottomBar::setModeonemusic()
 {
     playmode = CurrentItemOnce;
     modeLabel->setText("单曲播放");
-    modeButton->setTheIcon(":/icons/res/icons/onemusic_icon.png");
+    modeButton->setTheIcon(":/images/icons/onemusic_icon");
     emit setMode(CurrentItemOnce);
 }
 
@@ -266,7 +266,7 @@ void BottomBar::setModeonerep()
 {
     playmode = CurrentItemInLoop;
     modeLabel->setText("单曲循环");
-    modeButton->setTheIcon(":/icons/res/icons/onerep_icon.png");
+    modeButton->setTheIcon(":/images/icons/onerep_icon");
     emit setMode(CurrentItemInLoop);
 }
 
@@ -274,7 +274,7 @@ void BottomBar::setModeturnmusic()
 {
     playmode = Sequential;
     modeLabel->setText("顺序播放");
-    modeButton->setTheIcon(":/icons/res/icons/turnmusic_icon.png");
+    modeButton->setTheIcon(":/images/icons/turnmusic_icon");
     emit setMode(Sequential);
 }
 
@@ -282,7 +282,7 @@ void BottomBar::setModeallrep()
 {
     playmode = Loop;
     modeLabel->setText("循环播放");
-    modeButton->setTheIcon(":/icons/res/icons/allrep_icon.png");
+    modeButton->setTheIcon(":/images/icons/allrep_icon");
     emit setMode(Loop);
 }
 
@@ -290,7 +290,7 @@ void BottomBar::setModerandmusic()
 {
     playmode = Random;
     modeLabel->setText("随机播放");
-    modeButton->setTheIcon(":/icons/res/icons/randmusic_icon.png");
+    modeButton->setTheIcon(":/images/icons/randmusic_icon");
     emit setMode(Random);
 }
 

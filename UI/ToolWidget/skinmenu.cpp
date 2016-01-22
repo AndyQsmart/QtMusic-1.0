@@ -18,7 +18,7 @@ SkinMenu::SkinMenu(QWidget *parent) : QWidget(parent)
         skinButton[i] = new IconButton[5];
         for (int j = 0; j < 5; ++j)
         {
-            QString str = ":/icons/skins/res/icons/skins/skin";
+            QString str = ":/images/icons/skins/skin";
             char ch = '0'+i;
             str = str+ch;
             ch = '0'+j;
@@ -40,7 +40,7 @@ void SkinMenu::clickSkin(int i, int j)
 {
     if (i != 3 || j != 4)
     {
-        QString str = ":/skins/res/skins/skin";
+        QString str = ":/images/skins/skin";
         char ch = '0'+i;
         str = str+ch;
         ch = '0'+j;

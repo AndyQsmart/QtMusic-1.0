@@ -19,7 +19,7 @@ TopBar::TopBar(QWidget *parent) : QWidget(parent)
     this->setFixedHeight(51);
 
     logoLabel = new LogoLabel;
-    QPixmap pix(":/icons/res/icons/app_icon.gif");
+    QPixmap pix(":/images/icons/app_icon");
     QSize size(45, 34);//将图标缩小
     logoLabel->setPixmap(pix.scaled(size, Qt::KeepAspectRatio));
 
@@ -31,7 +31,7 @@ TopBar::TopBar(QWidget *parent) : QWidget(parent)
     leftLayout->setSpacing(0);//设置按钮间的间距为0
 
     //皮肤按钮
-    skinButton = new ImageButton(":/icons/res/icons/skinbutton_icon.png");
+    skinButton = new ImageButton(":/images/icons/skinbutton_icon");
     MyMenu *skinMenu = new MyMenu(this);
     connect(skinButton, SIGNAL(clicked()), skinMenu,SLOT(menuVisiable()));
     SkinMenu *skinItem = new SkinMenu(this);
@@ -41,7 +41,7 @@ TopBar::TopBar(QWidget *parent) : QWidget(parent)
     skinMenu->addAction(skin1);
 
     //菜单按钮相关设置
-    menuButton = new ImageButton(":/icons/res/icons/menubutton_icon.png");
+    menuButton = new ImageButton(":/images/icons/menubutton_icon");
     MyMenu *menu = new MyMenu(this);
     QAction *aboutUs = new QAction("关于", menu);
     QAction *quit = new QAction("退出软件", menu);
@@ -53,15 +53,15 @@ TopBar::TopBar(QWidget *parent) : QWidget(parent)
     connect(menuButton, SIGNAL(clicked()), menu, SLOT(menuVisiable()));
 
     //最小化按钮相关设置
-    hideButton = new ImageButton(":/icons/res/icons/hidebutton_icon.png");
+    hideButton = new ImageButton(":/images/icons/hidebutton_icon");
     connect(hideButton, SIGNAL(clicked()), this, SIGNAL(setMinSize()));
 
     //最大化按钮相关设置
-    maxButton = new ImageButton(":/icons/res/icons/maxbutton_icon.png");
+    maxButton = new ImageButton(":/images/icons/maxbutton_icon");
     connect(maxButton, SIGNAL(clicked()), this, SIGNAL(setMaxSize()));
 
     //关闭按钮相关设置
-    closeButton = new ImageButton(":/icons/res/icons/closebutton_icon.png");
+    closeButton = new ImageButton(":/images/icons/closebutton_icon");
     connect(closeButton, SIGNAL(clicked()), this, SIGNAL(closeWindow()));
 
     //通过水平布局将三个按钮组合起来

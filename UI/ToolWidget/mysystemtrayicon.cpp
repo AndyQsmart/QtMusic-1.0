@@ -15,10 +15,17 @@ MySystemTrayIcon::MySystemTrayIcon(QWidget *parent) : QSystemTrayIcon(parent)
     connect(showNor, SIGNAL(triggered()), this, SIGNAL(showWindow()));
     connect(quit, SIGNAL(triggered()), this, SIGNAL(quit()));
 
+    playMode = new QMenu("单曲播放");
+    playMode->setIcon(QIcon(":/images/icons/app_icon"));
+    playMode->setStyleSheet("background:rgba(255,255,255,100%);"
+                                "selection-background-color:rgba(0,128,180,80%);");
+    playMode->addAction("11");
+
     menu->addAction(showNor);
     menu->addSeparator();
+    menu->addMenu(playMode);
     menu->addAction(quit);
-    this->setIcon(QIcon(":/icons/res/icons/app_icon.gif"));
+    this->setIcon(QIcon(":/images/icons/app_icon"));
     this->setContextMenu(menu);
     this->setToolTip("QtMusic");
     this->show();

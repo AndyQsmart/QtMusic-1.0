@@ -15,7 +15,7 @@
 
 MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
 {
-    this->setWindowIcon(QIcon(":/icons/res/icons/app_icon"));
+    this->setWindowIcon(QIcon(":/images/icons/app_icon"));
 
     systemTrayIcon = new MySystemTrayIcon(this);
     connect(systemTrayIcon, SIGNAL(showWindow()), this, SLOT(show()));

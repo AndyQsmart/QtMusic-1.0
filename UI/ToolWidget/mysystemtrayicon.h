@@ -3,6 +3,8 @@
 
 #include <QSystemTrayIcon>
 
+class QMenu;
+
 class MySystemTrayIcon : public QSystemTrayIcon
 {
         Q_OBJECT
@@ -15,6 +17,9 @@ class MySystemTrayIcon : public QSystemTrayIcon
 
     private slots:
         void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
+
+    private:
+        QMenu *playMode;
 };
 
 #endif // MYSYSTEMTRAYICON_H

@@ -263,7 +263,7 @@ QString Data::getCurrentBackground()
 {
     tryConnectBaseInfo();
     QSqlQuery query;
-    QString dir = QString(":/skins/res/skins/skin00");
+    QString dir = QString(":/images/skins/skin");
     query.exec("select * from baseinfo where name='background';");
     if (query.next())
         dir = query.value(1).toString();

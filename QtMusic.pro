@@ -54,4 +54,4 @@ HEADERS  += \
     UI/ToolWidget/listlist.h
 
 RESOURCES += \
-    res.qrc
+    images/images.qrc
