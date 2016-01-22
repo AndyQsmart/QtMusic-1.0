@@ -15,12 +15,12 @@ class BottomBar : public QWidget
     public:
         explicit BottomBar(QWidget *parent = 0);
         int getPlayMode();
-        void setPlayMode(int mode);
         int getSoundLevel();
         void setSoundLevel(int sound);
         void setMusicTitle(QString name);
 
     public slots:
+        void setPlayMode(int mode);
         void setPostionAvailable();
         void setPostionNotAvailable();
         void setMaxDuration(qint64 max);

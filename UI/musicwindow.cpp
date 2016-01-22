@@ -53,6 +53,8 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(bottomBar, SIGNAL(tryplay()), this, SLOT(clickPlay()));
     connect(bottomBar, SIGNAL(playPre()), this, SLOT(playPre()));
     connect(bottomBar, SIGNAL(playNext()), this, SLOT(playNext()));
+    connect(systemTrayIcon, SIGNAL(setMode(int)), bottomBar, SLOT(setPlayMode(int)));
+    connect(bottomBar, SIGNAL(setMode(int)), systemTrayIcon, SLOT(setPlayMode(int)));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(topBar);
