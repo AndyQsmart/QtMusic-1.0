@@ -7,6 +7,7 @@
 class QPushButton;
 class ImageButton;
 class LogoLabel;
+class FuctionLabel;
 
 class TopBar : public QWidget
 {
@@ -26,9 +27,16 @@ class TopBar : public QWidget
         void setBackgroud(QString);
         void aboutQtMusic();
         void quit();
+        void selectFuction(int i);
+
+    public slots:
+        void changeFuction(QString name);
 
     private:
         LogoLabel *logoLabel;
+        FuctionLabel *lyricLabel;
+        FuctionLabel *networkLabel;
+        FuctionLabel *downloadLabel;
         ImageButton *skinButton;//皮肤按钮
         ImageButton *menuButton;//菜单按钮
         ImageButton *hideButton;//最小化按钮

@@ -12,6 +12,7 @@
 #include <QSplitter>
 #include <QQueue>
 #include <QFileDialog>
+#include <QStackedWidget>
 
 MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
 {
@@ -32,6 +33,20 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(topBar, SIGNAL(quit()), this, SLOT(close()));
     connect(topBar, SIGNAL(setBackgroud(QString)), this, SLOT(setBackgroud(QString)));
     connect(topBar, SIGNAL(aboutQtMusic()), this, SLOT(aboutQtMusic()));
+
+    fuctionPage = new QStackedWidget;
+    fuctionPage->setMinimumWidth(200);
+    QLabel *label1 = new QLabel("Lyric");
+    label1->setAlignment(Qt::AlignCenter);
+    QLabel *label2 = new QLabel("Network");
+    label2->setAlignment(Qt::AlignCenter);
+    QLabel *label3 = new QLabel("Download");
+    label3->setAlignment(Qt::AlignCenter);
+    fuctionPage->addWidget(label1);
+    fuctionPage->addWidget(label2);
+    fuctionPage->addWidget(label3);
+    fuctionPage->setCurrentIndex(0);
+    connect(topBar, SIGNAL(selectFuction(int)), fuctionPage, SLOT(setCurrentIndex(int)));
 
     musicPage = new MusicPage;
     musicPage->setMaximumWidth(500);
@@ -55,6 +70,7 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(bottomBar, SIGNAL(playNext()), this, SLOT(playNext()));
     connect(systemTrayIcon, SIGNAL(setMode(int)), bottomBar, SLOT(setPlayMode(int)));
     connect(bottomBar, SIGNAL(setMode(int)), systemTrayIcon, SLOT(setPlayMode(int)));
+    connect(bottomBar, SIGNAL(showLyric(QString)), topBar, SLOT(changeFuction(QString)));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(topBar);
@@ -64,13 +80,10 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     //在拖动到位并弹起鼠标后再显示分隔条
     splitter->setOpaqueResize(false);
     splitter->setChildrenCollapsible(false);
-    QLabel *label = new QLabel("QtMusic");
-    label->setAlignment(Qt::AlignCenter);
-    label->setMinimumWidth(200);
-    splitter->addWidget(label);
+    splitter->addWidget(fuctionPage);
     splitter->addWidget(musicPage);
     splitter->setStretchFactor(0, 10);
-    splitter->setStretchFactor(1, 2);
+    splitter->setStretchFactor(1, 1);
     splitter->setStyleSheet("QSplitter::handle { background-color: rgba(0,0,0,0%) }");
     splitter->setHandleWidth(4);
     mainLayout->addWidget(splitter);

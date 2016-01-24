@@ -33,6 +33,7 @@ class BottomBar : public QWidget
 
     signals:
         void mouseEnter();
+        void showLyric(QString name);
         void setPostion(qint64 pos);//
         void tryplay();
         void pause();
@@ -42,6 +43,7 @@ class BottomBar : public QWidget
         void setMode(int mode);
 
     private slots:
+        void clickCover();
         void postionChanged(qreal pos);
         void voiceChanged(qreal pos);
         void clickSoundButton();

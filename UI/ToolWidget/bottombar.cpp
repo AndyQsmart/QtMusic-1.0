@@ -28,6 +28,7 @@ BottomBar::BottomBar(QWidget *parent) : QWidget(parent)
     connect(postionSlider, SIGNAL(changeTo(qreal)), this, SLOT(postionChanged(qreal)));
 
     coverButton = new IconButton(":/images/icons/coverbutton_icon");
+    connect(coverButton, SIGNAL(clicked()), this, SLOT(clickCover()));
 
     QPalette palette;//调色板
     palette.setColor(QPalette::WindowText, QColor(255, 255, 255));//设置调色板参数为按钮字体色，RGB颜色为白色
@@ -131,6 +132,11 @@ BottomBar::BottomBar(QWidget *parent) : QWidget(parent)
     setLayout(mainLayout);
 
     dealMouse();
+}
+
+void BottomBar::clickCover()
+{
+    emit showLyric("lyric");
 }
 
 void BottomBar::setPostionAvailable()

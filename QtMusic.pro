@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     UI/ToolWidget/voiceslider.cpp \
     UI/ToolWidget/musiclist.cpp \
     UI/ToolWidget/musicpage.cpp \
-    UI/ToolWidget/listlist.cpp
+    UI/ToolWidget/listlist.cpp \
+    UI/ToolWidget/fuctionlabel.cpp
 
 HEADERS  += \
     musicapplication.h \
@@ -51,7 +52,8 @@ HEADERS  += \
     UI/ToolWidget/voiceslider.h \
     UI/ToolWidget/musiclist.h \
     UI/ToolWidget/musicpage.h \
-    UI/ToolWidget/listlist.h
+    UI/ToolWidget/listlist.h \
+    UI/ToolWidget/fuctionlabel.h
 
 RESOURCES += \
     images/images.qrc

@@ -1,4 +1,5 @@
 #include "topbar.h"
+#include "UI/ToolWidget/fuctionlabel.h"
 #include "UI/ToolWidget/imagebutton.h"
 #include "UI/ToolWidget/mymenu.h"
 #include "UI/ToolWidget/skinmenu.h"
@@ -6,6 +7,8 @@
 #include <QHBoxLayout>
 #include <QMouseEvent>
 #include <QtWidgets/QWidgetAction>
+
+#include <QDebug>
 
 TopBar::TopBar(QWidget *parent) : QWidget(parent)
 {
@@ -18,17 +21,41 @@ TopBar::TopBar(QWidget *parent) : QWidget(parent)
     this->setAttribute(Qt::WA_TranslucentBackground, true);//设置透明:窗体标题栏不透明,背景透明
     this->setFixedHeight(51);
 
-    logoLabel = new LogoLabel;
+    //Logo图片
+    logoLabel = new LogoLabel(this);
     QPixmap pix(":/images/icons/app_icon");
     QSize size(45, 34);//将图标缩小
     logoLabel->setPixmap(pix.scaled(size, Qt::KeepAspectRatio));
+
+    //歌词功能按钮
+    lyricLabel = new FuctionLabel(this);
+    lyricLabel->setText("歌词");
+    lyricLabel->setName("lyric");
+    connect(lyricLabel, SIGNAL(clicked(QString)), this, SLOT(changeFuction(QString)));
+
+    //网络歌曲功能按钮
+    networkLabel = new FuctionLabel(this);
+    networkLabel->setText("曲库");
+    networkLabel->setName("network");
+    connect(networkLabel, SIGNAL(clicked(QString)), this, SLOT(changeFuction(QString)));
+
+    //下载管理功能按钮
+    downloadLabel = new FuctionLabel(this);
+    downloadLabel->setText("下载");
+    downloadLabel->setName("download");
+    connect(downloadLabel, SIGNAL(clicked(QString)), this, SLOT(changeFuction(QString)));
+
+    lyricLabel->setPressed();
 
     QWidget *leftWidget = new QWidget;
     leftWidget->setFixedHeight(51);
     QHBoxLayout *leftLayout = new QHBoxLayout(leftWidget);
     leftLayout->addWidget(logoLabel);
+    leftLayout->addWidget(lyricLabel);
+    leftLayout->addWidget(networkLabel);
+    leftLayout->addWidget(downloadLabel);
     leftLayout->setMargin(5);
-    leftLayout->setSpacing(0);//设置按钮间的间距为0
+    leftLayout->setSpacing(28);//设置按钮间的间距为0
 
     //皮肤按钮
     skinButton = new ImageButton(":/images/icons/skinbutton_icon");
@@ -90,6 +117,28 @@ TopBar::TopBar(QWidget *parent) : QWidget(parent)
     dealMouse();
 }
 
+void TopBar::changeFuction(QString name)
+{
+    lyricLabel->setNotPressed();
+    networkLabel->setNotPressed();
+    downloadLabel->setNotPressed();
+    if (name == "lyric")
+    {
+        lyricLabel->setPressed();
+        emit selectFuction(0);
+    }
+    else if (name == "network")
+    {
+        networkLabel->setPressed();
+        emit selectFuction(1);
+    }
+    else
+    {
+        downloadLabel->setPressed();
+        emit selectFuction(2);
+    }
+}
+
 void TopBar::mouseDoubleClickEvent(QMouseEvent *)
 {
     emit setMaxSize();
@@ -98,6 +147,9 @@ void TopBar::mouseDoubleClickEvent(QMouseEvent *)
 void TopBar::dealMouse()
 {
     connect(logoLabel, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
+    connect(lyricLabel, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
+    connect(networkLabel, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
+    connect(downloadLabel, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
     connect(skinButton, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
     connect(menuButton, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
     connect(hideButton, SIGNAL(mouseEnter()), this, SIGNAL(mouseEnter()));
