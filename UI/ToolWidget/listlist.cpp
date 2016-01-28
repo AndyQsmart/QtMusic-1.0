@@ -78,8 +78,7 @@ ListList::ListList(QWidget *parent)
     horizontalHeader()->setHighlightSections(false);
     horizontalHeader()->resizeSection(0, 80);
     horizontalHeader()->setStretchLastSection(true);//占满表头
-    connect(this, SIGNAL(cellClicked(int,int)), this, SLOT(setHighLight(int)));
-    connect(this, SIGNAL(cellClicked(int,int)), this, SIGNAL(changeList(int)));
+    connect(this, SIGNAL(cellClicked(int,int)), this, SLOT(clickEvent()));
 
     MyMenu *listMenu = new MyMenu(this);
     QAction *addList = new QAction("创建列表", listMenu);
@@ -185,11 +184,21 @@ void ListList::enterEvent(QEvent *e)//鼠标进入事件
     emit mouseEnter();
 }
 
+void ListList::clickEvent()
+{
+    int row = currentRow();
+    setHighLight(row);
+    emit changeList(row);
+}
+
 void ListList::contextMenuEvent(QContextMenuEvent *event)
 {
     QPoint point = event->pos();//得到窗口坐标
     QTableWidgetItem *item = this->itemAt(point);
     if(item != NULL)
+    {
+        clickEvent();
         emit rightClicked();
+    }
     QWidget::contextMenuEvent(event);
 }

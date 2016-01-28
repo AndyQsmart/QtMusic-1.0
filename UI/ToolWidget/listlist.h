@@ -19,10 +19,6 @@ class ListList : public QTableWidget
         void wantToCreateList();
         void createList(QString name);
 
-    protected slots:
-        void tryToCreateList();
-        void deleteList();
-
     signals:
         void mouseEnter();
         void rightClicked();
@@ -30,6 +26,11 @@ class ListList : public QTableWidget
         void tryToCreateList(QString name);
         void deleteList(QString name);
         void deleteList(int index);
+
+    protected slots:
+        void clickEvent();
+        void tryToCreateList();
+        void deleteList();
 
     private:
         void enterEvent(QEvent *e);//鼠标进入事件
