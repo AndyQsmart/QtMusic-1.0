@@ -1,6 +1,7 @@
 #include "musicwindow.h"
 #include "UI/ToolWidget/topbar.h"
 #include "UI/ToolWidget/bottombar.h"
+#include "UI/ToolWidget/lyriclabel.h"
 #include "UI/ToolWidget/musicpage.h"
 #include "UI/ToolWidget/mysystemtrayicon.h"
 #include "Core/data.h"
@@ -36,13 +37,16 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
 
     fuctionPage = new QStackedWidget;
     fuctionPage->setMinimumWidth(200);
-    QLabel *label1 = new QLabel("Lyric");
-    label1->setAlignment(Qt::AlignCenter);
+
+    lyricLabel = new LyricLabel(true, this);
+    connect(player, SIGNAL(positionChanged(qint64)), lyricLabel, SLOT(postionChanged(qint64)));
+    //connect(lyricLabel, SIGNAL(changeTo(qint64)), player, SLOT(setPosition(qint64)));
+
     QLabel *label2 = new QLabel("Network");
     label2->setAlignment(Qt::AlignCenter);
     QLabel *label3 = new QLabel("Download");
     label3->setAlignment(Qt::AlignCenter);
-    fuctionPage->addWidget(label1);
+    fuctionPage->addWidget(lyricLabel);
     fuctionPage->addWidget(label2);
     fuctionPage->addWidget(label3);
     fuctionPage->setCurrentIndex(0);
@@ -62,6 +66,7 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(bottomBar, SIGNAL(setVoice(int)), player, SLOT(setVoice(int)));
     connect(bottomBar, SIGNAL(setMode(int)), player, SLOT(setPlayMode(int)));
     connect(bottomBar, SIGNAL(setPostion(qint64)), player, SLOT(setPosition(qint64)));
+    connect(bottomBar, SIGNAL(setPostion(qint64)), lyricLabel, SLOT(setPostion(qint64)));
     connect(player, SIGNAL(durationChanged(qint64)), bottomBar, SLOT(setMaxDuration(qint64)));
     connect(player, SIGNAL(positionChanged(qint64)), bottomBar, SLOT(changePostionTo(qint64)));
     connect(musicPage, SIGNAL(play(QString,int)), bottomBar, SLOT(setPostionAvailable()));
@@ -71,6 +76,8 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(systemTrayIcon, SIGNAL(setMode(int)), bottomBar, SLOT(setPlayMode(int)));
     connect(bottomBar, SIGNAL(setMode(int)), systemTrayIcon, SLOT(setPlayMode(int)));
     connect(bottomBar, SIGNAL(showLyric(QString)), topBar, SLOT(changeFuction(QString)));
+    //connect(lyricLabel, SIGNAL(changeTo(qint64)), bottomBar, SLOT(changePostionTo(qint64)));
+    //connect(lyricLabel, SIGNAL(changeTo(qint64)), bottomBar, SIGNAL(setPostion(qint64)));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(topBar);

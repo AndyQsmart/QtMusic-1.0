@@ -6,6 +6,7 @@
 class MySystemTrayIcon;
 class TopBar;
 class QStackedWidget;
+class LyricLabel;
 class MusicPage;
 class BottomBar;
 class MyPlayer;
@@ -44,6 +45,7 @@ class MusicWindow : public MainWindow
         MySystemTrayIcon *systemTrayIcon;
         TopBar *topBar;
         QStackedWidget *fuctionPage;
+        LyricLabel *lyricLabel;
         MusicPage *musicPage;
         BottomBar *bottomBar;
         MyPlayer *player;
