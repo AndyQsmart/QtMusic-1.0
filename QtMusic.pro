@@ -60,5 +60,4 @@ HEADERS  += \
     Core/lyric.h
 
 RESOURCES += \
-    images/images.qrc \
-    images/lyric.qrc
+    images/images.qrc

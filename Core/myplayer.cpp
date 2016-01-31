@@ -147,7 +147,7 @@ void MyPlayer::playNext(QMediaPlayer::MediaStatus state)
             break;
         case Loop:
             currentindex++;
-            if (currentindex < list.size())
+            if (currentindex < list[currentList].size())
             {
                 setCurrentIndex(currentindex);
                 player.play();

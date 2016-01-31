@@ -38,9 +38,9 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     fuctionPage = new QStackedWidget;
     fuctionPage->setMinimumWidth(200);
 
-    lyricLabel = new LyricLabel(true, this);
+    lyricLabel = new LyricLabel(false, this);
     connect(player, SIGNAL(positionChanged(qint64)), lyricLabel, SLOT(postionChanged(qint64)));
-    //connect(lyricLabel, SIGNAL(changeTo(qint64)), player, SLOT(setPosition(qint64)));
+    connect(lyricLabel, SIGNAL(changeTo(qint64)), player, SLOT(setPosition(qint64)));
 
     QLabel *label2 = new QLabel("Network");
     label2->setAlignment(Qt::AlignCenter);
@@ -158,6 +158,18 @@ void MusicWindow::musicChanged(QString listName, int index)
     bottomBar->setMusicTitle(Data::getMusicName(listName, index));
     musicPage->removeHighLight();
     musicPage->setHighLight(Data::getListId(listName), index);
+
+    //处理歌词
+    //先对数据库查询歌词
+    QString dir = Data::getMusicDir(listName, index);
+    int len = dir.length();
+    while (dir.at(len-1) != '.')
+    {
+        dir.remove(len-1, 1);
+        len--;
+    }
+    dir = dir+"lrc";
+    lyricLabel->getFromFile(dir);
 }
 
 void MusicWindow::clickPlay()

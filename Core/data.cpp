@@ -139,6 +139,18 @@ QString Data::getMusicName(QString listName, int id)
     return query.value(1).toString();
 }
 
+QString Data::getMusicDir(QString listName, int id)
+{
+    tryConnectList(listName);
+    QSqlQuery query;
+    QString str =
+            QString("select * from %1 where id = %2").arg(listName).arg(id);
+    qDebug() << str << endl;
+    query.exec(str);
+    query.next();
+    return query.value(0).toString();
+}
+
 QQueue<MusicInfo> Data::getMusicList(QString listName)
 {
     tryConnectList(listName);

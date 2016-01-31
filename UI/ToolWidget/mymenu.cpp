@@ -4,8 +4,10 @@
 
 MyMenu::MyMenu(QWidget *parent) : QMenu(parent)
 {
-    this->setStyleSheet("background:rgba(255,255,255,100%);"
-                        "selection-background-color:rgba(0,128,180,80%);");
+    this->setStyleSheet("QMenu{background:rgba(255,255,255,100%);}"
+                        "QMenu::item{padding:6px 42px;}"
+                        "QMenu::item:selected{background:rgba(0,128,180,80%);}");
+
 }
 
 void MyMenu::menuVisiable()

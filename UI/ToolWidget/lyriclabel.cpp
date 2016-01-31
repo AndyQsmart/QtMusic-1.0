@@ -1,10 +1,13 @@
 #include "lyriclabel.h"
 #include "Core/lyric.h"
+#include "UI/ToolWidget/mymenu.h"
 #include <QScroller>
 #include <QEvent>
 #include <QScrollPrepareEvent>
 #include <QPainter>
 #include <QApplication>
+#include <QFontDialog>
+#include <QColorDialog>
 #define WHEEL_SCROLL_OFFSET 50000.0
 
 #include <QDebug>
@@ -13,19 +16,61 @@ LyricLabel::LyricLabel(bool touch, QWidget *parent)
     :AbstractWheelWidget(touch, parent)
 {
     lyric = new Lyric();
-    isPressed = false;
+    lyricFont = new QFont("宋体", 12, QFont::Bold);
+    lyricNormal = new QColor(255, 255, 255);
+    lyricHighlight = new QColor(255, 220, 26);
+    connect(this, SIGNAL(changeTo(int)), this, SLOT(changeToEvent(int)));
+
+    MyMenu *menu = new MyMenu(this);
+    QAction *selectLyric = new QAction("关联本地歌词", menu);
+    QAction *fontSelect = new QAction("字体设置", menu);
+    connect(fontSelect, SIGNAL(triggered(bool)), this, SLOT(changeFont()));
+    QAction *colorNormal = new QAction("普通颜色", menu);
+    connect(colorNormal, SIGNAL(triggered(bool)), this, SLOT(changeNormalColor()));
+    QAction *colorHighLight = new QAction("高亮颜色", menu);
+    connect(colorHighLight, SIGNAL(triggered(bool)), this, SLOT(changeHightLightColor()));
+    menu->addAction(selectLyric);
+    menu->addSeparator();
+    menu->addAction(fontSelect);
+    menu->addAction(colorNormal);
+    menu->addAction(colorHighLight);
+    connect(this, SIGNAL(rightClicked()), menu, SLOT(menuVisiable()));
+}
+
+void LyricLabel::getFromFile(QString dir)
+{
+    lyric->getFromFile(dir);
+    this->update();
 }
 
 void LyricLabel::paintItem(QPainter* painter, int index, const QRect &rect)
 {
+    if (index == this->m_currentItem)
+    {
+        painter->setPen(*lyricHighlight);
+        QFont font(*lyricFont);
+        font.setPointSize(font.pointSize()+5);
+        painter->setFont(font);
+    }
+    else
+    {
+        QPen pen = painter->pen();
+        QColor color = pen.color();
+        color.setRed(lyricNormal->red());
+        color.setGreen(lyricNormal->green());
+        color.setBlue(lyricNormal->blue());
+        painter->setPen(color);
+        painter->setFont(*lyricFont);
+    }
     painter->drawText(rect, Qt::AlignCenter, lyric->getLineAt(index));
 }
 
 int LyricLabel::itemHeight() const
 {
-    //QFontMetrics fm(QFont("LyricBig", 30, QFont::Bold));
-    //return fm.height();
-    return 45;
+    QFontMetrics fm(*lyricFont);
+    //qDebug() << "itemheight" << fm.height()*2.8;
+    return fm.height()*2.8;
+    //return 45;
 }
 
 int LyricLabel::itemCount() const
@@ -35,7 +80,8 @@ int LyricLabel::itemCount() const
 
 void LyricLabel::postionChanged(qint64 pos)
 {
-    if (this->isPressed) return;
+    if (this->isScrolled) return;
+    pos = pos+500;//歌词滚动需要500ms
     int index = lyric->getIndex(pos);
     if (index != m_currentItem)
         this->scrollTo(index);
@@ -47,16 +93,39 @@ void LyricLabel::setPostion(qint64 pos)
     this->setCurrentIndex(index);
 }
 
-void LyricLabel::mousePressEvent(QMouseEvent *e)
+void LyricLabel::changeToEvent(int index)
 {
-    this->isPressed = true;
+    emit changeTo(lyric->getPostion(index));
 }
 
-void LyricLabel::mouseReleaseEvent(QMouseEvent *e)
+void LyricLabel::changeFont()
 {
-    qDebug() << m_currentItem << endl;
-    emit changeTo(this->m_currentItem);
-    this->isPressed = false;
+    bool flag;
+    *lyricFont = QFontDialog::getFont(&flag, *lyricFont, this);
+    if (flag)
+    {
+        // the user clicked OK and font is set to the font the user selected
+    }
+    else
+    {
+        // the user canceled the dialog; font is set to the initial value
+        lyricFont = new QFont("宋体", 12, QFont::Bold);
+    }
+}
+
+void LyricLabel::changeNormalColor()
+{
+    *lyricNormal =  QColorDialog::getColor(*lyricNormal, this);
+}
+
+void LyricLabel::changeHightLightColor()
+{
+    *lyricHighlight =  QColorDialog::getColor(*lyricHighlight, this);
+}
+
+void LyricLabel::contextMenuEvent(QContextMenuEvent *event)
+{
+    emit rightClicked();
 }
 
 AbstractWheelWidget::AbstractWheelWidget(bool touch, QWidget *parent)
@@ -65,6 +134,8 @@ AbstractWheelWidget::AbstractWheelWidget(bool touch, QWidget *parent)
 // ![0]
     QScroller::grabGesture(this, touch ? QScroller::TouchGesture : QScroller::LeftMouseButtonGesture);
 // ![0]
+    this->isScrolled = false;
+    this->dosignal = true;
 }
 
 AbstractWheelWidget::~AbstractWheelWidget()
@@ -110,6 +181,27 @@ bool AbstractWheelWidget::event(QEvent *e)
         case QEvent::Scroll:
         {
             QScrollEvent *se = static_cast<QScrollEvent *>(e);
+            if (dosignal)//只有触发信号的滚动才进行,而且这种是人为滚动
+            {
+                //开始滚动
+                if (se->scrollState() == QScrollEvent::ScrollStarted)
+                {
+                    qDebug() << "start scroll lyric" << endl;
+                    this->isScrolled = true;
+                }
+            }
+            //滚动结束
+            if (se->scrollState() == QScrollEvent::ScrollFinished)
+            {
+
+                if (dosignal)
+                {
+                    qDebug() << "滚动到第" << m_currentItem << endl;
+                    emit changeTo(this->m_currentItem);
+                }
+                this->isScrolled = false;
+                dosignal = true;
+            }
 
             qreal y = se->contentPos().y();
             int iy = y - WHEEL_SCROLL_OFFSET;
@@ -207,22 +299,17 @@ void AbstractWheelWidget::paintEvent(QPaintEvent* event)
             */
             if (itemNum >= 0 && itemNum < iC)
             {
-                if (itemNum == this->m_currentItem)
-                {
-                    painter.setPen(QColor(255, 220, 26));
-                    painter.setFont(QFont("宋体", 17, QFont::Bold));
-                    paintItem(&painter, itemNum, QRect(6, h/2 +i*iH - m_itemOffset - iH/2, w-6, iH ));
-                }
-                else
-                {
-                    int len = h/2/iH;
-                    int t = len-abs(i);
-                    t = (t+8)*255/(len+8);
-                    //qDebug() << "a值:" << t << endl;
-                    painter.setPen(QColor(255, 255, 255, t));
-                    painter.setFont(QFont("宋体", 12, QFont::Bold));
-                    paintItem(&painter, itemNum, QRect(6, h/2 +i*iH - m_itemOffset - iH/2, w-6, iH ));
-                }
+                int len = h/2/iH;
+                /*线性衰减的方法
+                int t = len-abs(i);
+                t = (t+8)*255/(len+8);
+                */
+                //抛物线衰减的方法
+                int t = abs(i);
+                t = 255-t*t*220/len/len;//220是255-y得到,y为边界透明度
+                //qDebug() << "a值:" << t << endl;
+                painter.setPen(QColor(255, 255, 255, t));
+                paintItem(&painter, itemNum, QRect(6, h/2 +i*iH - m_itemOffset - iH/2, w-6, iH ));
             }
         }
     }
@@ -256,6 +343,7 @@ void AbstractWheelWidget::paintEvent(QPaintEvent* event)
 */
 void AbstractWheelWidget::scrollTo(int index)
 {
+    this->dosignal = false;//这不是人为的滚动，不触发信号
     QScroller *scroller = QScroller::scroller(this);
     scroller->scrollTo(QPointF(0, WHEEL_SCROLL_OFFSET + index * itemHeight()), 500);
     //500ms切换到下一句歌词

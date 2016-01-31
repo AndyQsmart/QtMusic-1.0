@@ -24,12 +24,12 @@ Lyric::Lyric()
     line.push_back("我不想不想");
     line.push_back("我不想不想");
     */
-    getFromFile(":/Beyond-情人.lrc");
 }
 
 int Lyric::getIndex(qint64 pos)
 {
     //采用二分查找
+    //时间复杂度O(logn)
     int lt, rt, mid;
     lt = 0; rt = postion.count();
     while (lt < rt-1)
@@ -63,7 +63,11 @@ void Lyric::getFromFile(QString dir)
 {
     qDebug() << dir << endl;
     this->filedir = dir;
+    //this->offset
+    this->line.clear();
+    this->postion.clear();
     //先使用暴力的字符串匹配，还不会正则表达式
+    //时间复杂度O(n)
     QFile file(dir);
     if (!file.exists()) return;
     file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -138,7 +142,6 @@ void Lyric::getFromFile(QString dir)
         this->line.push_back(it.value());
         //qDebug() << it.value() << ":" << it.value();
     }
-    //qDebug() << "Lyric all :" << line.count();
 }
 
 QString Lyric::getLineAt(int index)
