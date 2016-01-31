@@ -307,6 +307,7 @@ void AbstractWheelWidget::paintEvent(QPaintEvent* event)
                 //抛物线衰减的方法
                 int t = abs(i);
                 t = 255-t*t*220/len/len;//220是255-y得到,y为边界透明度
+                if (t < 0) t = 0;
                 //qDebug() << "a值:" << t << endl;
                 painter.setPen(QColor(255, 255, 255, t));
                 paintItem(&painter, itemNum, QRect(6, h/2 +i*iH - m_itemOffset - iH/2, w-6, iH ));
