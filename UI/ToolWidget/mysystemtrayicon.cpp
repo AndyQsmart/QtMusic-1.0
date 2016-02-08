@@ -1,5 +1,6 @@
 #include "mysystemtrayicon.h"
 #include "Core/playmode.h"
+#include "UI/ToolWidget/mymenu.h"
 #include <QMenu>
 #include <QAction>
 
@@ -7,21 +8,15 @@ MySystemTrayIcon::MySystemTrayIcon(QWidget *parent) : QSystemTrayIcon(parent)
 {
     if (!QSystemTrayIcon::isSystemTrayAvailable())
         return;
-    QMenu *menu = new QMenu();
-    menu->setStyleSheet("QMenu{background:rgba(255,255,255,100%);}"
-                        "QMenu::item{padding:6px 42px;}"
-                        "QMenu::item:selected{background:rgba(0,128,180,80%);}");
-
+    QMenu *menu = new MyMenu();
     QAction *quit = new QAction("退出", menu);
     quit->setIcon(QIcon(":/images/systemtrayicon/close_icon"));
     QAction *showNor = new QAction("显示主窗口", menu);
     connect(showNor, SIGNAL(triggered()), this, SIGNAL(showWindow()));
     connect(quit, SIGNAL(triggered()), this, SIGNAL(quit()));
 
-    playMode = new QMenu("播放模式");
-    playMode->setStyleSheet("QMenu{background:rgba(255,255,255,100%);}"
-                            "QMenu::item{padding:6px 42px;}"
-                            "QMenu::item:selected{background:rgba(0,128,180,80%);}");
+    playMode = new MyMenu();
+    playMode->setTitle("播放模式");
     QAction *onemusic = new QAction("单曲播放", playMode);
     QAction *onerep = new QAction("单曲循环", playMode);
     QAction *turnmusic = new QAction("顺序播放", playMode);

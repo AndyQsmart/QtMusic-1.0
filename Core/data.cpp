@@ -20,7 +20,7 @@ bool Data::connectData()
     QDir dir("./data");
     if (!dir.exists())
     {
-        if (dir.mkpath("./data")) {}
+        if (dir.mkpath("./")) {}
         else return false;
     }
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -173,6 +173,16 @@ QQueue<MusicInfo> Data::getMusicList(QString listName)
                     "where name = '%2';").arg(all).arg(listName);
     query.exec(str);
     return q;
+}
+
+void Data::setArtist(QString listName, int id, QString artist)
+{
+    tryConnectList(listName);
+    QSqlQuery query;
+    QString str =
+            QString("update %1 set artist = '%2' where id = %3;").arg(listName).arg(artist).arg(id);
+    qDebug() << str << endl;
+    query.exec(str);
 }
 
 void Data::addMusicsToEnd(QString listName, QQueue<MusicInfo> musics)

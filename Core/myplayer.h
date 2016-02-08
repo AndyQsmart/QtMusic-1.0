@@ -31,6 +31,7 @@ class MyPlayer : public QObject
         int mediaCount();
         void addMedia(QString listName, QUrl url);
         void clear(QString listName);
+        QString getArtist();
 
     public slots:
         void setVoice(int voice);

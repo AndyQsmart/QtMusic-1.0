@@ -155,9 +155,12 @@ void MusicWindow::playerStateChanged(int state)
 void MusicWindow::musicChanged(QString listName, int index)
 {
     qDebug() << "music changed" << endl;
+    QString artist = player->getArtist();
     bottomBar->setMusicTitle(Data::getMusicName(listName, index));
     musicPage->removeHighLight();
     musicPage->setHighLight(Data::getListId(listName), index);
+    musicPage->setArtist(Data::getListId(listName), index, artist);
+    Data::setArtist(listName, index, artist);
 
     //处理歌词
     //先对数据库查询歌词

@@ -2,6 +2,7 @@
 #include "Core/playmode.h"
 #include <QMediaContent>
 #include <QTime>
+#include <QMediaMetaData>
 
 MyPlayer::MyPlayer()
 {
@@ -53,6 +54,11 @@ void MyPlayer::setPlayMode(int mode)
 void MyPlayer::setPosition(qint64 pos)
 {
     player.setPosition(pos);
+}
+
+QString MyPlayer::getArtist()
+{
+    return player.metaData(QMediaMetaData::ContributingArtist).toString();
 }
 
 void MyPlayer::addMusics(QString name, QQueue<MusicInfo> q)

@@ -21,6 +21,7 @@ class MusicPage : public QWidget
         void clearMusic();//
         void removeHighLight();
         void setHighLight(int list, int index);
+        void setArtist(int list, int index, QString artist);
 
     protected:
         void enterEvent(QEvent *e);//鼠标进入事件

@@ -83,7 +83,17 @@ MusicPage::MusicPage(QWidget *parent) : QWidget(parent)
 void MusicPage::addMusic(QString name, QString artist)
 {
     MusicList *musicList = (MusicList *)musicLists->currentWidget();
-    int row = musicList->rowCount();
+    int row = musicList->count();
+
+    QListWidgetItem *item = new QListWidgetItem(musicList);
+    item->setSizeHint(QSize(item->sizeHint().width(), 30));
+    musicList->insertItem(row, item);
+    MusicListItem *itemwidget = new MusicListItem(musicList);
+    itemwidget->setName(name);
+    itemwidget->setArtist(artist);
+    musicList->setItemWidget(item, itemwidget);
+    musicList->setCurrentRow(row);
+    /*
     musicList->insertRow(row);
     QTableWidgetItem *nameItem = new QTableWidgetItem(name);
     QTableWidgetItem *artiseItem = new QTableWidgetItem(artist);
@@ -95,6 +105,7 @@ void MusicPage::addMusic(QString name, QString artist)
     musicList->setItem(row, 1, artiseItem);
 
     musicList->setCurrentCell(row, 0);
+    */
 }
 
 void MusicPage::addMusics(QStringList fileDir)
@@ -114,7 +125,15 @@ void MusicPage::addMusics(int listId, QQueue<MusicInfo> musics)
         musicInfo = musics.front();
         musics.pop_front();
         musicList = (MusicList *)musicLists->widget(listId);
-        row = musicList->rowCount();
+        row = musicList->count();
+        QListWidgetItem *item = new QListWidgetItem(musicList);
+        item->setSizeHint(QSize(item->sizeHint().width(), 30));
+        musicList->insertItem(row, item);
+        MusicListItem *itemwidget = new MusicListItem(musicList);
+        itemwidget->setName(musicInfo.getName());
+        itemwidget->setArtist(musicInfo.getArtist());
+        musicList->setItemWidget(item, itemwidget);
+        /*
         musicList->insertRow(row);
         QTableWidgetItem *nameItem = new QTableWidgetItem(musicInfo.getName());
         QTableWidgetItem *artiseItem = new QTableWidgetItem(musicInfo.getArtist());
@@ -126,15 +145,17 @@ void MusicPage::addMusics(int listId, QQueue<MusicInfo> musics)
         musicList->setItem(row, 1, artiseItem);
 
         musicList->setCurrentCell(row, 0);
+        */
     }
 }
 
 void MusicPage::clearMusic()
-{/*
+{
+    /*
     int row = musicList->rowCount()-1;
     while (row >= 0)
     {
-        for (int i = 0; i < 2; i++)
+        for (itn i = 0; i < 2; i++)
         {
             QTableWidgetItem *item = musicList->takeItem(row, i);
             delete item;
@@ -161,6 +182,12 @@ void MusicPage::setHighLight(int list, int index)
 {
     MusicList *musicList = (MusicList *)musicLists->widget(list);
     musicList->setHighLight(index);
+}
+
+void MusicPage::setArtist(int list, int index, QString artist)
+{
+    MusicList *musicList = (MusicList *)musicLists->widget(list);
+    musicList->setArtist(index, artist);
 }
 
 void MusicPage::setCurrentList(int index)

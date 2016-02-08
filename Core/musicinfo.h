@@ -7,7 +7,7 @@ class MusicInfo
 {
     public:
         MusicInfo();
-        void setDir(QString dirStr) {dir = dirStr;}
+        void setDir(QString dirStr);
         void setName(QString nameStr) {name = nameStr;}
         void setArtist(QString artistStr) {artist = artistStr;}
         QString getDir() {return dir;}

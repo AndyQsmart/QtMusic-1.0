@@ -23,6 +23,7 @@ class Data
         static void addMusicsToEnd(QString listName, QQueue<MusicInfo> musics);
         static void deleteMusic(QString listName, int row);
         static void deleteAllMusic(QString listName);
+        static void setArtist(QString listName, int id, QString artist);
 
         static void tryConnectBaseInfo();
         static int getListCount();
