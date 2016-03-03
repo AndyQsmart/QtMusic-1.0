@@ -39,6 +39,7 @@ class MyPlayer : public QObject
         void addMusics(QString name, QQueue<MusicInfo> q);
         void removeTheMusic(QString listName, int index);
         void removeAllMusics(QString listName);
+        void moveMusic(QString listName, int from, int to);
         void setPosition(qint64 pos);
         void playNext(QMediaPlayer::MediaStatus state);
         void playTheMusic(QString listName, int index);

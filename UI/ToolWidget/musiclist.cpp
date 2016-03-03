@@ -6,6 +6,7 @@
 #include <QHeaderView>
 #include <QException>
 
+#include <QMimeData>
 #include <QPainter>
 #include <QtDebug>
 
@@ -76,11 +77,14 @@ MusicList::MusicList(QWidget *parent)
     //setShowGrid(false);//格子线不显示
     //verticalHeader()->setVisible(false);//垂直表头不可见
     //horizontalHeader()->setVisible(false);//垂直表头不可见
-    setFocusPolicy(Qt::NoFocus);
+    //setFocusPolicy(Qt::NoFocus);
     //horizontalHeader()->setHighlightSections(false);
     //horizontalHeader()->resizeSection(0, 180);
     //horizontalHeader()->resizeSection(1, 80);
     //horizontalHeader()->setStretchLastSection(true);//占满表头
+    this->setDragEnabled(true);
+    this->setDropIndicatorShown(true);
+    this->setAcceptDrops(true);
 
     MyMenu *menu = new MyMenu(this);
 
@@ -216,6 +220,40 @@ void MusicList::contextMenuEvent(QContextMenuEvent *event)
     QWidget::contextMenuEvent(event);
 }
 
+void MusicList::dropEvent(QDropEvent *event)
+{
+    MusicList *source = (MusicList *)((void*)(event->source()));
+    if (source && source == this)
+    {
+        QListWidgetItem *item = itemAt(event->pos());
+        int from, to = this->row(item);
+        if (to == -1) to = this->count()-1;
+        from = this->currentRow();
+        item = this->item(from);
+        MusicListItem *itemwidget = (MusicListItem *)this->itemWidget(item);
+        MusicListItem *newitemwidget = new MusicListItem(this);
+        newitemwidget->setName(itemwidget->getName());
+        newitemwidget->setArtist(itemwidget->getArtist());
+        item = this->takeItem(from);
+        this->removeItemWidget(item);
+        delete item;
+        item = new QListWidgetItem();
+        item->setSizeHint(QSize(item->sizeHint().width(), 30));
+        if (highLightRow == from)
+        {
+            newitemwidget->setHighLight();
+            item->setSizeHint(QSize(item->sizeHint().width(), 60));
+            highLightRow = to;
+        }
+        else if (highLightRow > from && highLightRow <= to) highLightRow--;
+        else if (highLightRow < from && highLightRow >= to) highLightRow++;
+        this->insertItem(to, item);
+        this->setItemWidget(item, newitemwidget);
+        qDebug() << from << " " << to << " " << highLightRow << endl;
+        emit moveMusic(from, to);
+    }
+}
+
 MusicListItem::MusicListItem(QWidget *parent) : QWidget(parent)
 {
     //this->setFixedHeight(30);
@@ -254,6 +292,16 @@ void MusicListItem::setName(QString name)
 void MusicListItem::setArtist(QString artist)
 {
     this->artist = artist;
+}
+
+QString MusicListItem::getName()
+{
+    return this->name;
+}
+
+QString MusicListItem::getArtist()
+{
+    return this->artist;
 }
 
 void MusicListItem::setHighLight()

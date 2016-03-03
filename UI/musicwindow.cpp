@@ -61,6 +61,7 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(musicPage, SIGNAL(play(QString,int)), player, SLOT(playTheMusic(QString,int)));
     connect(musicPage, SIGNAL(removeTheMusic(QString,int)), this, SLOT(removeTheMusic(QString,int)));
     connect(musicPage, SIGNAL(removeAllMusics(QString)), this, SLOT(removeAllMusics(QString)));
+    connect(musicPage, SIGNAL(moveMusic(QString,int,int)), this, SLOT(moveMusic(QString,int,int)));
 
     bottomBar = new BottomBar(this);
     connect(bottomBar, SIGNAL(setVoice(int)), player, SLOT(setVoice(int)));
@@ -238,6 +239,12 @@ void MusicWindow::removeAllMusics(QString listName)
 {
     player->removeAllMusics(listName);
     Data::deleteAllMusic(listName);
+}
+
+void MusicWindow::moveMusic(QString listName, int from, int to)
+{
+    player->moveMusic(listName, from, to);
+    Data::moveMusic(listName, from, to);
 }
 
 void MusicWindow::tryToCreateList(QString name)

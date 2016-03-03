@@ -213,6 +213,7 @@ void MusicPage::createList()
     connect(musicList, SIGNAL(playTheMusic(int)), this, SLOT(play(int)));
     connect(musicList, SIGNAL(removeTheMusic(int)), this, SLOT(removeTheMusic(int)));
     connect(musicList, SIGNAL(removeAllMusics()), this, SLOT(removeAllMusics()));
+    connect(musicList, SIGNAL(moveMusic(int,int)), this, SLOT(moveMusic(int,int)));
     connect(this, SIGNAL(hightLightChanged()), musicList, SLOT(removeHighLight()));
 }
 
@@ -231,6 +232,12 @@ void MusicPage::removeTheMusic(int index)
 void MusicPage::removeAllMusics()
 {
     emit removeAllMusics(this->getCurrentList());
+}
+
+void  MusicPage::moveMusic(int from, int to)
+{
+    emit moveMusic(this->getCurrentList(), from, to);
+    //qDebug() << "move" << endl;
 }
 
 void MusicPage::enterEvent(QEvent *e)//鼠标进入事件

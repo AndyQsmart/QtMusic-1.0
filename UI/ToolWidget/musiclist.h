@@ -29,10 +29,12 @@ class MusicList : public QListWidget
         void playTheMusic(int index);
         void removeTheMusic(int index);
         void removeAllMusics();
+        void moveMusic(int from, int to);
 
     private:
         void enterEvent(QEvent *e);//鼠标进入事件
         void contextMenuEvent(QContextMenuEvent *event);//右击事件
+        void dropEvent(QDropEvent *event);
         int highLightRow = -1;
 };
 
@@ -45,6 +47,8 @@ class MusicListItem : public QWidget
         void setName(QString name);
         void setArtist(QString artist);
         void setHighLight();
+        QString getName();
+        QString getArtist();
         void removeHighLight();
 
     private:

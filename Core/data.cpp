@@ -243,6 +243,24 @@ void Data::deleteAllMusic(QString listName)
     query.exec(str);
 }
 
+void Data::moveMusic(QString listName, int from, int to)
+{
+    QSqlDatabase::database().transaction();
+    tryConnectList(listName);
+    QSqlQuery query;
+    QString str =
+            QString("update %1 set id = -1 where id = %2").arg(listName).arg(from);
+    query.exec(str);
+    str = QString("update %1 set id = id-1 where id > %2").arg(listName).arg(from);
+    query.exec(str);
+    str = QString("update %1 set id = id+1 where id >= %2").arg(listName).arg(to);
+    query.exec(str);
+    str = QString("update %1 set id = %2 where id = -1").arg(listName).arg(to);
+    query.exec(str);
+    QSqlDatabase::database().commit();
+    qDebug() << "move from" << from << "to" << to << endl;
+}
+
 void Data::tryConnectBaseInfo()
 {
     QSqlQuery query;

@@ -33,6 +33,7 @@ class MusicWindow : public MainWindow
         void addMusics();
         void removeTheMusic(QString listName, int index);
         void removeAllMusics(QString listName);
+        void moveMusic(QString listName, int from, int to);
         void deleteList(QString name);
 
     private:

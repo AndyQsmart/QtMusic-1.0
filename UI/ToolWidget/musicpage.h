@@ -38,6 +38,7 @@ class MusicPage : public QWidget
         void removeAllMusics(QString listName);
         void play(QString name, int index);
         void hightLightChanged();
+        void moveMusic(QString listName, int from, int to);
 
     private slots:
         void changeMusicList(int index);
@@ -46,6 +47,7 @@ class MusicPage : public QWidget
         void removeTheMusic(int index);
         void removeAllMusics();
         void play(int index);
+        void moveMusic(int from, int to);
 
     private:
         QPushButton *addButton;

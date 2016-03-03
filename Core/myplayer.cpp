@@ -94,6 +94,14 @@ void MyPlayer::removeAllMusics(QString listName)
     }
 }
 
+void MyPlayer::moveMusic(QString listName, int from, int to)
+{
+    QUrl tmp;
+    tmp = list[listName][from];
+    list[listName].removeAt(from);
+    list[listName].insert(to, tmp);
+}
+
 void MyPlayer::setCurrentIndex(int index)
 {
     this->currentindex = index;

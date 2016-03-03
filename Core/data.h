@@ -24,6 +24,7 @@ class Data
         static void deleteMusic(QString listName, int row);
         static void deleteAllMusic(QString listName);
         static void setArtist(QString listName, int id, QString artist);
+        static void moveMusic(QString listName, int from, int to);
 
         static void tryConnectBaseInfo();
         static int getListCount();
