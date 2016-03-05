@@ -24,8 +24,8 @@ QtMusicÊÇ»ùÓÚQt C++ÊµÏÖµÄ£¬±àÒëºóÖ§³Ö¿çÆ½Ì¨ÔËĞĞ¡£Ô¤¼Æ½«°üº¬¸èÇú²¥·Å¡¢¸èµ¥¹ÜÀí¡¢¸
 *ÔÚÔØÈë´óÁ¿¸èÇúµÄÇé¿öÏÂ£¬SQLiteÖ§³ÖÊÂÎñ´¦Àí£¬¼´Ê¹ÔÚ²»Ê¹ÓÃ¶àÏß³ÌµÄÇé¿öÏÂ£¬½çÃæÏìÓ¦Ò²±È½Ï¼°Ê±¡£
 
 #½çÃæĞ§¹ûÍ¼
-![image](https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)
-![image](https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)
-![image](https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)
+![image](QtMusic-1.0/readme_picture/pic1.png)
+![image](QtMusic-1.0/readme_picture/pic2.png)
+![image](QtMusic-1.0/readme_picture/pic3.png)
 
 
