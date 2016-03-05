@@ -2,7 +2,7 @@
 This is a music player written by C++ GUI Qt
 QtMusicÊÇ»ùÓÚQt C++ÊµÏÖµÄ£¬±àÒëºóÖ§³Ö¿çÆ½Ì¨ÔËÐÐ¡£Ô¤¼Æ½«°üº¬¸èÇú²¥·Å¡¢¸èµ¥¹ÜÀí¡¢¸è´ÊÏÔÊ¾ÒÔ¼°ÍøÂç¸èÇúµÈ¹¦ÄÜ£¬½çÃæÓÑºÃ¡£
 
-#Ä¿Ç°ÊµÐÐÒÔÏÂÄ£¿é
+#Ä¿Ç°ÊµÏÖÒÔÏÂÄ£¿é
 #¸èÇú²¥·Å
 Ê¹ÓÃQt×Ô´øµÄÃ½Ìå¿âÊµÏÖÁË¸èÇúµÄ²¥·Å£¬Ö§³Ömp3¡¢wmaµÈÒôÀÖ¸ñÊ½¡£
 
@@ -22,3 +22,12 @@ QtMusicÊÇ»ùÓÚQt C++ÊµÏÖµÄ£¬±àÒëºóÖ§³Ö¿çÆ½Ì¨ÔËÐÐ¡£Ô¤¼Æ½«°üº¬¸èÇú²¥·Å¡¢¸èµ¥¹ÜÀí¡¢¸
 *Qt×Ô´øµÄ¿â·â×°ÁËSQLite£¬¿çÆ½Ì¨·½ÃæÖ§³Ö½ÏºÃ¡£
 *²ÉÓÃ´«Í³µÄÎÄ¼þ´æµµÐ§ÂÊ½ÏµÍ£¬Êý¾Ý¿âÐ§ÂÊÏà¶Ô½Ï¸ß¡£ÕâÑù¿ÉÒÔÊµÊ±´æµµ£¬¼´Ê¹ÔÚ³ÌÐò±ÀÀ£µÄÇé¿öÏÂ£¬Ò²ÄÜ±£´æ½ÏÐÂµÄ´æµµ¡£
 *ÔÚÔØÈë´óÁ¿¸èÇúµÄÇé¿öÏÂ£¬SQLiteÖ§³ÖÊÂÎñ´¦Àí£¬¼´Ê¹ÔÚ²»Ê¹ÓÃ¶àÏß³ÌµÄÇé¿öÏÂ£¬½çÃæÏìÓ¦Ò²±È½Ï¼°Ê±¡£
+
+#½çÃæÐ§¹ûÍ¼
+ 
+
+ 
+ 
+
+
+
