@@ -43,7 +43,10 @@ int Lyric::getIndex(qint64 pos)
 
 qint64 Lyric::getPostion(int index)
 {
-    return postion[index];
+    if (index < postion.size())
+        return postion[index];
+    else
+        return 0;
 }
 
 /*
@@ -61,7 +64,7 @@ qint64 Lyric::getPostion(int index)
 */
 void Lyric::getFromFile(QString dir)
 {
-    qDebug() << dir << endl;
+    qDebug() << "Lyric dir:" << dir << endl;
     this->filedir = dir;
     //this->offset
     this->line.clear();
@@ -92,10 +95,7 @@ void Lyric::getFromFile(QString dir)
                 if (muli.count())
                 {
                     for (int i = 0; i < muli.count(); ++i)
-                    {
                         ans.insert(muli[i], str);
-                        //qDebug() << muli[i] << ":" << str;
-                    }
                 }
                 str = "";
                 muli.clear();
@@ -123,11 +123,6 @@ void Lyric::getFromFile(QString dir)
                     ss = val.toDouble(&flag);
                     if (flag)
                         muli.push_back((qint64)(ss*1000)+mm*60*1000);
-                    //qDebug() << mm << ":" << ss << endl;
-                }
-                else
-                {
-                    qDebug() << sign << ":" << val;
                 }
                 break;
             }
@@ -140,7 +135,6 @@ void Lyric::getFromFile(QString dir)
     {
         this->postion.push_back(it.key());
         this->line.push_back(it.value());
-        //qDebug() << it.value() << ":" << it.value();
     }
 }
 

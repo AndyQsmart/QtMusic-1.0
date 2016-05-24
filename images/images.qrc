@@ -58,13 +58,17 @@
         <file>skins/skin32.jpg</file>
         <file>skins/skin33.jpg</file>
         <file>skins/skin34.jpg</file>
-        <file>skins/skin44.psd</file>
-        <file>skins/skin45.jpg</file>
         <file>systemtrayicon/close_icon.png</file>
         <file>systemtrayicon/allrep_icon.png</file>
         <file>systemtrayicon/onemusic_icon.png</file>
         <file>systemtrayicon/onerep_icon.png</file>
         <file>systemtrayicon/randmusic_icon.png</file>
         <file>systemtrayicon/turnmusic_icon.png</file>
+        <file>network/searchbutton_icon.jpg</file>
+        <file>network/netease_icon.jpg</file>
+        <file>network/kuwo_icon.jpg</file>
+        <file>network/ttpod_icon.jpg</file>
+        <file>network/qq_icon.jpg</file>
+        <file>network/baidu_icon.jpg</file>
     </qresource>
 </RCC>

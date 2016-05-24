@@ -4,6 +4,7 @@
 #include "UI/ToolWidget/lyriclabel.h"
 #include "UI/ToolWidget/musicpage.h"
 #include "UI/ToolWidget/mysystemtrayicon.h"
+#include "UI/NetworkWidget/networkpage.h"
 #include "Core/data.h"
 #include "Core/myplayer.h"
 #include <QIcon>
@@ -42,12 +43,14 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(player, SIGNAL(positionChanged(qint64)), lyricLabel, SLOT(postionChanged(qint64)));
     connect(lyricLabel, SIGNAL(changeTo(qint64)), player, SLOT(setPosition(qint64)));
 
+    networkPage = new NetworkPage();
+
     QLabel *label2 = new QLabel("Network");
     label2->setAlignment(Qt::AlignCenter);
     QLabel *label3 = new QLabel("Download");
     label3->setAlignment(Qt::AlignCenter);
     fuctionPage->addWidget(lyricLabel);
-    fuctionPage->addWidget(label2);
+    fuctionPage->addWidget(networkPage);
     fuctionPage->addWidget(label3);
     fuctionPage->setCurrentIndex(0);
     connect(topBar, SIGNAL(selectFuction(int)), fuctionPage, SLOT(setCurrentIndex(int)));
@@ -263,6 +266,10 @@ void MusicWindow::dealMouse()
 {
     topBar->setMouseTracking(true);
     connect(topBar, SIGNAL(mouseEnter()), this, SLOT(loseMouse()));
+    lyricLabel->setMouseTracking(true);
+    connect(lyricLabel, SIGNAL(mouseEnter()), this, SLOT(loseMouse()));
+    networkPage->setMouseTracking(true);
+    connect(networkPage, SIGNAL(mouseEnter()), this, SLOT(loseMouse()));
     musicPage->setMouseTracking(true);
     connect(musicPage, SIGNAL(mouseEnter()), this, SLOT(loseMouse()));
     bottomBar->setMouseTracking(true);

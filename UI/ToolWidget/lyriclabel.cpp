@@ -128,6 +128,11 @@ void LyricLabel::contextMenuEvent(QContextMenuEvent *event)
     emit rightClicked();
 }
 
+void LyricLabel::enterEvent(QEvent *e)
+{
+    emit mouseEnter();
+}
+
 AbstractWheelWidget::AbstractWheelWidget(bool touch, QWidget *parent)
     : QWidget(parent), m_currentItem(0), m_itemOffset(0)
 {

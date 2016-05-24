@@ -59,6 +59,7 @@ class LyricLabel : public AbstractWheelWidget
     signals:
         void changeTo(qint64 pos);
         void rightClicked();
+        void mouseEnter();
 
     public slots:
         void postionChanged(qint64 pos);
@@ -72,6 +73,7 @@ class LyricLabel : public AbstractWheelWidget
 
     protected:
         void contextMenuEvent(QContextMenuEvent *event);//右击事件
+        void enterEvent(QEvent *e);
 
     protected:
         Lyric *lyric;

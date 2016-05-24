@@ -16,7 +16,7 @@ class Data
         static void deleteList(QString name);
         static int getListId(QString name);
 
-        static void tryConnectList(QString listName);
+        static void tryConnectMusicList();
         static QString getMusicName(QString listName, int id);
         static QString getMusicDir(QString listName, int id);
         static QQueue <MusicInfo> getMusicList(QString listName);

@@ -10,6 +10,11 @@
 
 #include <QtDebug>
 
+/*
+ listlist(name, id, count);
+ musiclist(listname, id, dir, name, artist);
+*/
+
 Data::Data()
 {
 
@@ -20,14 +25,28 @@ bool Data::connectData()
     QDir dir("./data");
     if (!dir.exists())
     {
-        if (dir.mkpath("./")) {}
-        else return false;
+        if (dir.mkpath("./"))
+        {
+            qDebug() << "Make the data path sucessfully!" << endl;
+        }
+        else
+        {
+            qDebug() << "Fail to make the data path!" << endl;
+            return false;
+        }
     }
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("./data/musicData.db");
     if (!db.open())
+    {
+        qDebug() << "Open \"./data/musicData.db\" sucessfully" << endl;
         return false;
-    return true;
+    }
+    else
+    {
+        qDebug() << "Fail to open \"./data/musicData.db\"" << endl;
+        return true;
+    }
 }
 
 void Data::tryConnectListList()
@@ -35,10 +54,18 @@ void Data::tryConnectListList()
     QSqlQuery query;
     if (!query.exec("select * from listlist;"))
     {
+        qDebug() << "Table listlist no exist!" << endl;
         if (!query.exec("CREATE TABLE listlist("
                         "name VARCHAR,"
                         "id int,"
-                        "count int)")) {}
+                        "count int)"))
+        {
+            qDebug() << "Fail to create table listlist!" << endl;
+        }
+        else
+        {
+            qDebug() << "Create table listlist sucessfully!" << endl;
+        }
     }
 }
 
@@ -51,7 +78,7 @@ QQueue<QString> Data::getListList()
     while (query.next())
     {
         q.push_back(query.value(0).toString());
-        qDebug() << query.value(1).toInt() << endl;
+        qDebug() << "Get list" << query.value(1).toInt() << ":" << query.value(0).toString()<< endl;
     }
     if (q.size() == 0)
     {
@@ -59,6 +86,7 @@ QQueue<QString> Data::getListList()
                    "(name, id, count) values('默认列表', 0, 0);");
         Data::changeListCount(1);
         q.push_back(QString("默认列表"));
+        qDebug() << "Create list:默认列表" << endl;
     }
     return q;
 }
@@ -66,21 +94,28 @@ QQueue<QString> Data::getListList()
 bool Data::addList(QString name)
 {
     tryConnectListList();
+    name = name.replace("'", "''");
     QSqlQuery query;
     QString str =
             QString("select * from listlist where name = '%1'").arg(name);
     query.exec(str);
-    if (query.next()) return false;
+    if (query.next())
+    {
+        qDebug() << "The list is existed, fail to create" << endl;
+        return false;
+    }
     int cnt = Data::getListCount();
     str = QString("insert into listlist(name, id, count) values('%1', %2, 0);").arg(name).arg(cnt);
     query.exec(str);
     Data::changeListCount(cnt+1);
+    qDebug() << "Create list" << cnt << ":" << name << endl;
     return true;
 }
 
 void Data::deleteList(QString name)
 {
     tryConnectListList();
+    name = name.replace("'", "''");
     QSqlQuery query;
     QString str =
             QString("select * from listlist where name = '%1'").arg(name);
@@ -96,16 +131,18 @@ void Data::deleteList(QString name)
                     "where id > '%1';").arg(id);
     query.exec(str);
 
-    str = QString("drop table %1").arg(name);
+    str = QString("delete from musiclist where listname = '%1'").arg(name);
     query.exec(str);
 
     int cnt = Data::getListCount();
     Data::changeListCount(cnt-1);
+    qDebug() << "Delete list"+name << endl;
 }
 
 int Data::getListId(QString name)
 {
     tryConnectListList();
+    name = name.replace("'", "''");
     QSqlQuery query;
     QString str =
             QString("select * from listlist where name = '%1'").arg(name);
@@ -114,57 +151,67 @@ int Data::getListId(QString name)
     return query.value(1).toInt();
 }
 
-void Data::tryConnectList(QString listName)
+void Data::tryConnectMusicList()
 {
     QSqlQuery query;
-    if (!query.exec("select * from "+listName+";"))
+    if (!query.exec("select * from musiclist;"))
     {
-        if (!query.exec("CREATE TABLE "+listName+"("
+        qDebug() << "Table musiclist no exist!" << endl;
+        if (!query.exec("CREATE TABLE musiclist("
+                        "listname VARCHAR,"
+                        "id int,"
                         "dir VARCHAR,"
                         "name VARCHAR,"
-                        "artist VARCHAR,"
-                        "id int)")) {}
+                        "artist VARCHAR)"))
+        {
+            qDebug() << "Fail to create table musiclist!" << endl;
+        }
+        else
+        {
+            qDebug() << "Create table musiclist sucessfully!" << endl;
+        }
     }
 }
 
 QString Data::getMusicName(QString listName, int id)
 {
-    tryConnectList(listName);
+    tryConnectMusicList();
+    listName = listName.replace("'", "''");
     QSqlQuery query;
     QString str =
-            QString("select * from %1 where id = %2").arg(listName).arg(id);
-    qDebug() << str << endl;
+            QString("select * from musiclist where listname = '%1' and id = %2").arg(listName).arg(id);
     query.exec(str);
     query.next();
-    return query.value(1).toString();
+    return query.value(3).toString();
 }
 
 QString Data::getMusicDir(QString listName, int id)
 {
-    tryConnectList(listName);
+    tryConnectMusicList();
+    listName = listName.replace("'", "''");
     QSqlQuery query;
     QString str =
-            QString("select * from %1 where id = %2").arg(listName).arg(id);
-    qDebug() << str << endl;
+            QString("select * from musiclist where listname = '%1' and id = %2").arg(listName).arg(id);
     query.exec(str);
     query.next();
-    return query.value(0).toString();
+    return query.value(2).toString();
 }
 
 QQueue<MusicInfo> Data::getMusicList(QString listName)
 {
-    tryConnectList(listName);
+    tryConnectMusicList();
+    listName = listName.replace("'", "''");
     QQueue <MusicInfo> q;
     MusicInfo musicInfo;
     QSqlQuery query;
-    query.exec("select * from "+listName+" order by id;");
+    query.exec("select * from musiclist where listname = '"+listName+"' order by id;");
     while (query.next())
     {
-        musicInfo.setDir(query.value(0).toString());
-        musicInfo.setName(query.value(1).toString());
-        musicInfo.setArtist(query.value(2).toString());
+        musicInfo.setDir(query.value(2).toString());
+        musicInfo.setName(query.value(3).toString());
+        musicInfo.setArtist(query.value(4).toString());
         q.push_back(musicInfo);
-        //qDebug() << query.value(3).toInt() << " ";
+        qDebug() << "Get music:" << query.value(3).toString() << endl;
     }
     int all = q.size();
     query.exec("select * from listlist;");
@@ -177,18 +224,19 @@ QQueue<MusicInfo> Data::getMusicList(QString listName)
 
 void Data::setArtist(QString listName, int id, QString artist)
 {
-    tryConnectList(listName);
+    tryConnectMusicList();
+    listName = listName.replace("'", "''");
     QSqlQuery query;
     QString str =
-            QString("update %1 set artist = '%2' where id = %3;").arg(listName).arg(artist).arg(id);
-    qDebug() << str << endl;
+            QString("update musiclist set artist = '%1' where listname = '%2' and id = %3;").arg(artist).arg(listName).arg(id);
     query.exec(str);
 }
 
 void Data::addMusicsToEnd(QString listName, QQueue<MusicInfo> musics)
 {
     QSqlDatabase::database().transaction();
-    tryConnectList(listName);
+    listName = listName.replace("'", "''");
+    tryConnectMusicList();
     int cnt;
     QSqlQuery query;
     QString str =
@@ -198,67 +246,71 @@ void Data::addMusicsToEnd(QString listName, QQueue<MusicInfo> musics)
         cnt = query.value(2).toInt();
     else
         cnt = 0;
-    qDebug() << cnt << endl;
     MusicInfo musicInfo;
     while (!musics.empty())
     {
         musicInfo = musics.front();
         QString str
                 = QString("insert into "
-                          "%1(dir, name, artist, id) "
-                          "values('%2', '%3', '%4', %5);").arg(listName).arg(musicInfo.getDir()).arg(musicInfo.getName()).arg(musicInfo.getArtist()).arg(cnt);
+                          "musiclist(listname, id, dir, name, artist) "
+                          "values('%1', %2, '%3', '%4', '%5');").arg(
+                      listName).arg(
+                      cnt).arg(
+                      musicInfo.getDir().replace("'", "''")).arg(
+                      musicInfo.getName().replace("'", "''")).arg(
+                      musicInfo.getArtist());
+        qDebug() << "Add music:" << musicInfo.getName() << endl;
         query.exec(str);
-        //qDebug() << str << endl;
         cnt++;
         musics.pop_front();
     }
     query.exec("select * from listlist;");
     str = QString("update listlist set count = %1 "
                     "where name = '%2';").arg(cnt).arg(listName);
-    qDebug() << str << endl;
     query.exec(str);
     QSqlDatabase::database().commit();
 }
 
 void Data::deleteMusic(QString listName, int row)
 {
-    tryConnectList(listName);
+    tryConnectMusicList();
+    listName = listName.replace("'", "''");
     QSqlQuery query;
     QString str =
-            QString("delete from %1 where id = %2").arg(listName).arg(row);
-    qDebug() << str << endl;
+            QString("delete from musiclist where listname = '%1' and id = %2").arg(listName).arg(row);
     query.exec(str);
-    str = QString("update %1 set id = id-1 "
-                    "where id > '%2';").arg(listName).arg(row);
-    qDebug() << str << endl;
+    str = QString("update musiclist set id = id-1 "
+                    "where listname = '%1' and id > '%2';").arg(listName).arg(row);
     query.exec(str);
 }
 
 void Data::deleteAllMusic(QString listName)
 {
-    tryConnectList(listName);
+    tryConnectMusicList();
+    listName = listName.replace("'", "''");
     QSqlQuery query;
     QString str =
-            QString("delete from %1 where id >= 0").arg(listName);
+            QString("delete from musiclist where listname = '%1'").arg(listName);
     query.exec(str);
 }
 
 void Data::moveMusic(QString listName, int from, int to)
 {
     QSqlDatabase::database().transaction();
-    tryConnectList(listName);
+    listName = listName.replace("'", "''");
+    tryConnectMusicList();
     QSqlQuery query;
     QString str =
-            QString("update %1 set id = -1 where id = %2").arg(listName).arg(from);
+            QString("update musiclist set id = -1 where listname = '%1' and id = %2").arg(listName).arg(from);
     query.exec(str);
-    str = QString("update %1 set id = id-1 where id > %2").arg(listName).arg(from);
+    str = QString("update musiclist set id = id-1 where listname = '%1' and id > %2").arg(listName).arg(from);
     query.exec(str);
-    str = QString("update %1 set id = id+1 where id >= %2").arg(listName).arg(to);
+    str = QString("update musiclist set id = id+1 where listname = '%1' and id >= %2").arg(listName).arg(to);
     query.exec(str);
-    str = QString("update %1 set id = %2 where id = -1").arg(listName).arg(to);
+    str = QString("update musiclist set id = %1 where listname = '%2' and id = -1").arg(to).arg(listName);
     query.exec(str);
     QSqlDatabase::database().commit();
-    qDebug() << "move from" << from << "to" << to << endl;
+    qDebug() << "Move music from" << from << "to" << to << endl;
 }
 
 void Data::tryConnectBaseInfo()
@@ -267,11 +319,18 @@ void Data::tryConnectBaseInfo()
     QString cmd = QString("select * from baseinfo;");
     if (!query.exec(cmd))
     {
+        qDebug() << "Table baseinfo no exist!" << endl;
         cmd = QString("create table baseinfo("
                       "name VARCHAR,"
                       "val VARCHAR)");
-        if (!query.exec(cmd)) {}
-        qDebug() << cmd << endl;
+        if (!query.exec(cmd))
+        {
+            qDebug() << "Fail to create table baseinfo!" << endl;
+        }
+        else
+        {
+            qDebug() << "Create table baseinfo sucessfully!" << endl;
+        }
     }
 }
 
@@ -280,13 +339,8 @@ int Data::getListCount()
     tryConnectBaseInfo();
     QSqlQuery query;
     query.exec("select * from baseinfo where name='listcount';");
-    if (query.next())
-    {
-        qDebug() << "read listcount successful:" << query.value(1).toInt() << endl;
-        return query.value(1).toInt();
-    }
-    else
-        return 0;
+    if (query.next()) return query.value(1).toInt();
+    else return 0;
 }
 
 void Data::changeListCount(int cnt)
@@ -296,7 +350,6 @@ void Data::changeListCount(int cnt)
     query.exec("delete from baseinfo where name = 'listcount';");
     QString cmd = QString("insert into baseinfo(name, val) values('listcount', '%1');").arg(cnt);
     query.exec(cmd);
-    qDebug() << cmd << endl;
 }
 
 QString Data::getCurrentBackground()
@@ -307,7 +360,6 @@ QString Data::getCurrentBackground()
     query.exec("select * from baseinfo where name='background';");
     if (query.next())
         dir = query.value(1).toString();
-    qDebug() << "Background: " << dir << endl;
     return dir;
 }
 
@@ -319,7 +371,6 @@ void Data::changeCurrentBackground(QString dir)
     query.exec(cmd);
     cmd = QString("insert into baseinfo(name, val) values('background', '%1');").arg(dir);
     query.exec(cmd);
-    qDebug() << cmd << endl;
 }
 
 int Data::getSoundLevel()
@@ -327,13 +378,8 @@ int Data::getSoundLevel()
     tryConnectBaseInfo();
     QSqlQuery query;
     query.exec("select * from baseinfo where name='soundlevel';");
-    if (query.next())
-    {
-        qDebug() << "read soundlevel successful:" << query.value(1).toInt() << endl;
-        return query.value(1).toInt();
-    }
-    else
-        return 25;
+    if (query.next()) return query.value(1).toInt();
+    else return 25;
 }
 
 void Data::changeSoundLevel(int voice)
@@ -343,7 +389,6 @@ void Data::changeSoundLevel(int voice)
     query.exec("delete from baseinfo where name = 'soundlevel';");
     QString cmd = QString("insert into baseinfo(name, val) values('soundlevel', '%1');").arg(voice);
     query.exec(cmd);
-    qDebug() << cmd << endl;
 }
 
 int Data::getPlayMode()
@@ -351,15 +396,8 @@ int Data::getPlayMode()
     tryConnectBaseInfo();
     QSqlQuery query;
     query.exec("select * from baseinfo where name='playmode';");
-    if (query.next())
-    {
-        qDebug() << "read playmode successful:" << query.value(1).toInt() << endl;
-        return query.value(1).toInt();
-    }
-    else
-    {
-        return Sequential;
-    }
+    if (query.next()) return query.value(1).toInt();
+    else return Sequential;
 }
 
 void Data::changePlayMode(int mode)
@@ -368,8 +406,5 @@ void Data::changePlayMode(int mode)
     QSqlQuery query;
     query.exec("delete from baseinfo where name = 'playmode';");
     QString cmd = QString("insert into baseinfo(name, val) values('playmode', '%1');").arg(mode);
-    if (query.exec(cmd))
-        qDebug() << cmd << endl;
-    else
-        qDebug() << "fail " << cmd << endl;
+    query.exec(cmd);
 }

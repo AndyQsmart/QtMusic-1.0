@@ -33,7 +33,9 @@ SOURCES += main.cpp\
     UI/ToolWidget/listlist.cpp \
     UI/ToolWidget/fuctionlabel.cpp \
     UI/ToolWidget/lyriclabel.cpp \
-    Core/lyric.cpp
+    Core/lyric.cpp \
+    UI/NetworkWidget/networkpage.cpp \
+    UI/NetworkWidget/labelbutton.cpp
 
 HEADERS  += \
     musicapplication.h \
@@ -57,7 +59,9 @@ HEADERS  += \
     UI/ToolWidget/listlist.h \
     UI/ToolWidget/fuctionlabel.h \
     UI/ToolWidget/lyriclabel.h \
-    Core/lyric.h
+    Core/lyric.h \
+    UI/NetworkWidget/networkpage.h \
+    UI/NetworkWidget/labelbutton.h
 
 RESOURCES += \
     images/images.qrc
