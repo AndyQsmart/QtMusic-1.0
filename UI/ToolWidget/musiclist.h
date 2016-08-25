@@ -6,58 +6,58 @@
 
 class MusicList : public QListWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
-    public:
-        MusicList(QWidget *parent = 0);
-        ~MusicList();
-        void setHighLight(int row);
-        void setArtist(int index, QString artist);
+public:
+    MusicList(QWidget *parent = 0);
+    ~MusicList();
+    void setHighLight(int row);
+    void setArtist(int index, QString artist);
 
-    public slots:
-        void removeHighLight();
+public slots:
+    void removeHighLight();
 
-    private slots:
-        void playTheMusic();
-        void removeTheMusic();
-        void removeAllMusic();
-        void doubleClickedEvent(QModelIndex index);
+private slots:
+    void playTheMusic();
+    void removeTheMusic();
+    void removeAllMusic();
+    void doubleClickedEvent(QModelIndex index);
 
-    signals:
-        void mouseEnter();
-        void rightClicked();
-        void playTheMusic(int index);
-        void removeTheMusic(int index);
-        void removeAllMusics();
-        void moveMusic(int from, int to);
+signals:
+    void mouseEnter();
+    void rightClicked();
+    void playTheMusic(int index);
+    void removeTheMusic(int index);
+    void removeAllMusics();
+    void moveMusic(int from, int to);
 
-    private:
-        void enterEvent(QEvent *e);//鼠标进入事件
-        void contextMenuEvent(QContextMenuEvent *event);//右击事件
-        void dropEvent(QDropEvent *event);
-        int highLightRow = -1;
+private:
+    void enterEvent(QEvent *e);//鼠标进入事件
+    void contextMenuEvent(QContextMenuEvent *event);//右击事件
+    void dropEvent(QDropEvent *event);
+    int highLightRow = -1;
 };
 
 class MusicListItem : public QWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
-    public:
-        MusicListItem(QWidget *parent = 0);
-        void setName(QString name);
-        void setArtist(QString artist);
-        void setHighLight();
-        QString getName();
-        QString getArtist();
-        void removeHighLight();
+public:
+    MusicListItem(QWidget *parent = 0);
+    void setName(QString name);
+    void setArtist(QString artist);
+    void setHighLight();
+    QString getName();
+    QString getArtist();
+    void removeHighLight();
 
-    private:
-        void paintEvent(QPaintEvent *e);
+private:
+    void paintEvent(QPaintEvent *e);
 
-    private:
-        bool isHighLight;
-        QString name;
-        QString artist;
+private:
+    bool isHighLight;
+    QString name;
+    QString artist;
 };
 
 #endif // MUSICLIST_H

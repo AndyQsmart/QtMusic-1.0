@@ -44,6 +44,7 @@ TopBar::TopBar(QWidget *parent) : QWidget(parent)
     downloadLabel->setText("下载");
     downloadLabel->setName("download");
     connect(downloadLabel, SIGNAL(clicked(QString)), this, SLOT(changeFuction(QString)));
+/*beta*/    downloadLabel->setVisible(false);
 
     lyricLabel->setPressed();
 

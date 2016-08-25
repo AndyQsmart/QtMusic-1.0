@@ -8,15 +8,15 @@ class IconButton;
 class SkinMenu : public QWidget
 {
     Q_OBJECT
-    public:
-        explicit SkinMenu(QWidget *parent = 0);
+public:
+    explicit SkinMenu(QWidget *parent = 0);
 
-    signals:
-        void changeSkin(QString dir);
-    public slots:
-        void clickSkin(int i, int j);
-    private:
-        IconButton **skinButton;
+signals:
+    void changeSkin(QString dir);
+public slots:
+    void clickSkin(int i, int j);
+private:
+    IconButton **skinButton;
 };
 
 #endif // SKINMENU_H

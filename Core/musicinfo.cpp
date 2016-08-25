@@ -11,7 +11,7 @@ MusicInfo::MusicInfo()
 void MusicInfo::setDir(QString dirStr)
 {
     this->dir = dirStr;
-    QMediaPlayer *player = new QMediaPlayer();
+    //QMediaPlayer *player = new QMediaPlayer();
     //connect(player, SIGNAL(metaDataChanged())
     //player->setMedia(QMediaContent(QUrl(dirStr)));
     //this->artist = player->metaData(QMediaMetaData::Title).toString();

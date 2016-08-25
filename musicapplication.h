@@ -10,14 +10,14 @@ class MusicApplication : public QApplication
 {
     Q_OBJECT
 
-    public:
-        MusicApplication(int &argc, char **argv);
-        ~MusicApplication();
-        bool isRunning();
+public:
+    MusicApplication(int &argc, char **argv);
+    ~MusicApplication();
+    bool isRunning();
 
-    private:
-        bool hasRun;
-        QSharedMemory sharedMemory;
+private:
+    bool hasRun;
+    QSharedMemory sharedMemory;
 };
 
 #endif // MUSICAPPLICATION_H

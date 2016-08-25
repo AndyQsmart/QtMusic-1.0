@@ -5,18 +5,18 @@
 
 class LabelButton : public QLabel
 {
-        Q_OBJECT
-    public:
-        LabelButton(QWidget *parent = 0);
-        void setIcon(QString dir);
+    Q_OBJECT
+public:
+    LabelButton(QWidget *parent = 0);
+    void setIcon(QString dir);
 
-    signals:
-        void clicked();
+signals:
+    void clicked();
 
-    protected:
-        void enterEvent(QEvent *e);
-        void leaveEvent(QEvent *e);
-        void mousePressEvent(QMouseEvent *e);//鼠标按下
+protected:
+    void enterEvent(QEvent *e);
+    void leaveEvent(QEvent *e);
+    void mousePressEvent(QMouseEvent *e);//鼠标按下
 };
 
 #endif // LABELBUTTON_H

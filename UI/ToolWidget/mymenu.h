@@ -5,12 +5,12 @@
 
 class MyMenu : public QMenu
 {
-        Q_OBJECT
-    public:
-        explicit MyMenu(QWidget *parent = 0);
+    Q_OBJECT
+public:
+    explicit MyMenu(QWidget *parent = 0);
 
-    public slots:
-        void menuVisiable();
+public slots:
+    void menuVisiable();
 };
 
 #endif // MYMENU_H
