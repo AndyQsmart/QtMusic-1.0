@@ -2,6 +2,7 @@
 #define MUSICWINDOW_H
 
 #include "UI/ToolWidget/mainwindow.h"
+#include "Core/musicinfo.h"
 
 class MySystemTrayIcon;
 class TopBar;
@@ -32,6 +33,7 @@ private slots:
     void musicChanged(QString listName, int index);
     void tryToCreateList(QString name);
     void addMusics();
+    void addMusic(MusicInfo musicInfo);
     void removeTheMusic(QString listName, int index);
     void removeAllMusics(QString listName);
     void moveMusic(QString listName, int from, int to);

@@ -14,6 +14,10 @@ public:
 
 signals:
     void rightClicked();
+    void addSongsToCurrentList(QVector<int> &songs);
+
+private slots:
+    void addSongsToCurrentList();
 
 private:
     void resizeEvent(QResizeEvent *event);

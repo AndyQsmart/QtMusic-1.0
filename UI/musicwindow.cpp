@@ -44,6 +44,7 @@ MusicWindow::MusicWindow(QWidget *parent) : MainWindow(parent)
     connect(lyricLabel, SIGNAL(changeTo(qint64)), player, SLOT(setPosition(qint64)));
 
     networkPage = new NetworkPage();
+    connect(networkPage, SIGNAL(tryAddSongToCurrentList(MusicInfo)), this, SLOT(addMusic(MusicInfo)));
 
     QLabel *label2 = new QLabel("Network");
     label2->setAlignment(Qt::AlignCenter);
@@ -228,6 +229,15 @@ void MusicWindow::addMusics()
         musicInfo.setArtist("");
         musics.push_back(musicInfo);
     }
+    player->addMusics(musicPage->getCurrentList(), musics);
+    Data::addMusicsToEnd(musicPage->getCurrentList(), musics);
+}
+
+void MusicWindow::addMusic(MusicInfo musicInfo)
+{
+    musicPage->addMusic(musicInfo);
+    QQueue<MusicInfo> musics;
+    musics.push_back(musicInfo);
     player->addMusics(musicPage->getCurrentList(), musics);
     Data::addMusicsToEnd(musicPage->getCurrentList(), musics);
 }

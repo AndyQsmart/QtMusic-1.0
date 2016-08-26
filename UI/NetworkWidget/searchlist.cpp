@@ -5,6 +5,8 @@
 #include <QPainter>
 #include <QContextMenuEvent>
 
+#include <QtDebug>
+
 SearchList::SearchList(QWidget *parent)
         : QTableWidget(parent)
 {
@@ -80,6 +82,7 @@ SearchList::SearchList(QWidget *parent)
 
     MyMenu *listMenu = new MyMenu(this);
     QAction *addToCurrentList = new QAction("添加到当前列表", listMenu);
+    connect(addToCurrentList, SIGNAL(triggered(bool)), this, SLOT(addSongsToCurrentList()));
     listMenu->addAction(addToCurrentList);
     connect(this, SIGNAL(rightClicked()), listMenu, SLOT(menuVisiable()));
 }
@@ -111,6 +114,19 @@ void SearchList::clearSongs()
         }
         this->removeRow(0);
     }
+}
+
+void SearchList::addSongsToCurrentList()
+{
+    QList<QTableWidgetItem*>items = this->selectedItems();
+    int cnt = items.count(), row;
+    QVector<int> songs;
+    for(int i = 0; i < cnt; i += 3)
+    {
+       row = this->row(items.at(i));//获取选中的行
+       songs.push_back(row);
+    }
+    emit addSongsToCurrentList(songs);
 }
 
 void SearchList::resizeEvent(QResizeEvent *event)

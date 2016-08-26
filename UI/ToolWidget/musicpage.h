@@ -18,6 +18,7 @@ public:
     QString getCurrentList();
     void addMusics(QStringList fileDir);
     void addMusics(int listId, QQueue<MusicInfo> musics);
+    void addMusic(MusicInfo musicInfo);
     void clearMusic();//
     void removeHighLight();
     void setHighLight(int list, int index);

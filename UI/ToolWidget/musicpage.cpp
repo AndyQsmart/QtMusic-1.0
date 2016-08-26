@@ -149,6 +149,11 @@ void MusicPage::addMusics(int listId, QQueue<MusicInfo> musics)
     }
 }
 
+void MusicPage::addMusic(MusicInfo musicInfo)
+{
+    this->addMusic(musicInfo.getName(), musicInfo.getArtist());
+}
+
 void MusicPage::clearMusic()
 {
     /*
