@@ -1,6 +1,7 @@
 #ifndef NETWORKPAGE_H
 #define NETWORKPAGE_H
 
+#include <QMutex>
 #include <QWidget>
 
 class LabelButton;
@@ -34,6 +35,7 @@ private:
     QNetworkAccessManager *accessManager;
     SearchList *searchList;
     int nowPage;
+    int pageCount;
 };
 
 #endif // NETWORKPAGE_H

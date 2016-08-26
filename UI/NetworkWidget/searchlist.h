@@ -11,7 +11,13 @@ public:
     SearchList(QWidget *parent = 0);
     void addSong(const QString &name, const QString &artist, const QString &length);
     void clearSongs();
-    void setSongs(QVector<QString> &name, QVector<QString> &artist, QVector<int> &length);
+
+signals:
+    void rightClicked();
+
+private:
+    void resizeEvent(QResizeEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event);//右击事件
 };
 
 #endif // SEARCHLIST_H

@@ -37,6 +37,7 @@ NetworkPage::NetworkPage(QWidget *parent) : QWidget(parent)
                              "background-color:rgba(244,244,244,0%);"
                              "border:2px solid rgb(128, 150, 244);"
                              "border-radius:8px;");
+    connect(keyText, SIGNAL(editingFinished()), this, SLOT(searchSongs()));
     searchButton = new LabelButton(this);
     searchButton->setFixedSize(40, 40);
     searchButton->setIcon(":/images/network/searchbutton_icon.jpg");
@@ -58,6 +59,7 @@ NetworkPage::NetworkPage(QWidget *parent) : QWidget(parent)
     this->setLayout(mainLayout);
 
     this->nowPage = 0;
+    this->pageCount = 100;
 }
 
 void NetworkPage::searchSongs()
@@ -73,7 +75,7 @@ void NetworkPage::searchSongs()
     request.setRawHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0");
 
     QByteArray data = "";
-    data.append("s=" + keyText->text() + "&type=1&offset=" + QString("%1").arg(nowPage*100) + "&total=true&limit=100");
+    data.append("s=" + keyText->text() + "&type=1&offset=" + QString("%1").arg(nowPage*pageCount) + "&total=true&limit=100");
     this->accessManager->post(request, data);
 }
 
@@ -106,7 +108,7 @@ void NetworkPage::searchFinished(QNetworkReply *reply)
         this->searchList->addSong(name, artist, length);
     }
     nowPage++;
-    if (nowPage*100 >= cnt) nowPage = 0;
+    if (nowPage*pageCount >= cnt) nowPage = 0;
     else searchSongs();
 }
 

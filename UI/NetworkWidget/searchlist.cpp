@@ -1,6 +1,9 @@
 #include "searchlist.h"
+#include "UI/ToolWidget/mymenu.h"
 #include <QScrollBar>
 #include <QHeaderView>
+#include <QPainter>
+#include <QContextMenuEvent>
 
 SearchList::SearchList(QWidget *parent)
         : QTableWidget(parent)
@@ -68,18 +71,22 @@ SearchList::SearchList(QWidget *parent)
     setSelectionBehavior(QAbstractItemView::SelectRows);//设置选中一行
     setEditTriggers(QAbstractItemView::NoEditTriggers);//设置不可修改
     setShowGrid(false);//格子线不显示
-    verticalHeader()->setVisible(false);
-    //horizontalHeader()->setVisible(false);
-    //horizontalHeader()->setResizeContentsPrecision(QHeaderView::ResizeToContents);
+    //verticalHeader()->setVisible(false);
+    horizontalHeader()->setVisible(false);
     setFocusPolicy(Qt::NoFocus);
     horizontalHeader()->setHighlightSections(false);
     horizontalHeader()->resizeSection(0, 80);
     horizontalHeader()->setStretchLastSection(true);//占满表头
-    //resizeColumnToContents(0);
+
+    MyMenu *listMenu = new MyMenu(this);
+    QAction *addToCurrentList = new QAction("添加到当前列表", listMenu);
+    listMenu->addAction(addToCurrentList);
+    //connect(this, SIGNAL(rightClicked()), listMenu, SLOT(menuVisiable()));
 }
 
 void SearchList::addSong(const QString &name, const QString &artist, const QString &length)
 {
+
     int now = this->rowCount();
     this->insertRow(now);
     QTableWidgetItem *itemName = new QTableWidgetItem(name);
@@ -88,6 +95,7 @@ void SearchList::addSong(const QString &name, const QString &artist, const QStri
     this->setItem(now, 1, itemArtist);
     QTableWidgetItem *itemLength = new QTableWidgetItem(length);
     this->setItem(now, 2, itemLength);
+
 }
 
 void SearchList::clearSongs()
@@ -95,6 +103,7 @@ void SearchList::clearSongs()
     int len = this->rowCount();
     for (int i = 0; i < len; ++i)
     {
+
         for (int j = 0; j < 3; ++ j)
         {
             QTableWidgetItem *item = this->takeItem(0, j);
@@ -104,17 +113,23 @@ void SearchList::clearSongs()
     }
 }
 
-void SearchList::setSongs(QVector<QString> &name, QVector<QString> &artist, QVector<int> &length)
+void SearchList::resizeEvent(QResizeEvent *event)
 {
-    int len = name.size();
-    for (int i = 0; i < len; ++i)
-    {
-        this->insertRow(i);
-        QTableWidgetItem *itemName = new QTableWidgetItem(name[i]);
-        this->setItem(i, 0, itemName);
-        QTableWidgetItem *itemArtist = new QTableWidgetItem(artist[i]);
-        this->setItem(i, 1, itemArtist);
-        QTableWidgetItem *itemLength = new QTableWidgetItem();
-        this->setItem(i, 2, itemLength);
-    }
+    Q_UNUSED(event);
+    int w = this->width();
+    this->horizontalHeader()->resizeSection(0, w/2);
+    this->horizontalHeader()->resizeSection(1, w*3/10);
 }
+
+void SearchList::contextMenuEvent(QContextMenuEvent *event)
+{
+    QPoint point = event->pos();//得到窗口坐标
+    QTableWidgetItem *item = this->itemAt(point);
+    if(item != NULL)
+    {
+        //clickEvent();
+        emit rightClicked();
+    }
+    //QWidget::contextMenuEvent(event);
+}
+
