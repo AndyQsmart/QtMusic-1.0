@@ -24,7 +24,6 @@ NetworkPage::NetworkPage(QWidget *parent) : QWidget(parent)
     this->setAutoFillBackground(true);//将组件的背景设为可调
     this->setPalette(palette);//将调色板应用于组件
 
-    //test
     palette.setColor(QPalette::Background, QColor(12, 132, 132));//设置调色板参数为背景色，RGB颜色为深蓝色
     logoButton = new LabelButton(this);
     logoButton->setFixedSize(40, 40);
@@ -37,7 +36,8 @@ NetworkPage::NetworkPage(QWidget *parent) : QWidget(parent)
                              "background-color:rgba(244,244,244,0%);"
                              "border:2px solid rgb(128, 150, 244);"
                              "border-radius:8px;");
-    connect(keyText, SIGNAL(editingFinished()), this, SLOT(searchSongs()));
+    connect(keyText, SIGNAL(returnPressed()), this, SLOT(searchSongs()));
+
     searchButton = new LabelButton(this);
     searchButton->setFixedSize(40, 40);
     searchButton->setIcon(":/images/network/searchbutton_icon.jpg");

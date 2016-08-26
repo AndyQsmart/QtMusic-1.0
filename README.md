@@ -12,6 +12,9 @@ QtMusicÊÇ»ùÓÚQt C++ÊµÏÖµÄ£¬±àÒëºóÖ§³Ö¿çÆ½Ì¨ÔËĞĞ¡£Ô¤¼Æ½«°üº¬¸èÇú²¥·Å¡¢¸èµ¥¹ÜÀí¡¢¸
 #¸è´ÊÏÔÊ¾
 Í¨¹ıÊÖĞ´×Ö·û´®Æ¥Åä½âÎöÁËlrc¸ñÊ½µÄ¸è´ÊÎÄ¼ş£¬È»ºóÍ¨¹ı¶ş·Ö²éÕÒÊµÏÖÁËÏÔÊ¾Ä³Ê±¿ÌµÄ¸è´Ê¡£
 
+#ÍøÂç¸èÇú
+ÀûÓÃÍøÒ×ÒôÀÖAPI£¬Í¨¹ıpostºÍget·½·¨»ñµÃ¸èÇú£¬²¢Ê¹ÓÃQMediaPlayerÖ±½Ó²¥·ÅÍøÂç¸èÇú¡£
+
 #ÎªÊ²Ã´Ê¹ÓÃQt GUI
 *Qt GUI¿âÖ§³Ö¿çÆ½Ì¨£¬¶øÇÒÍ¼ĞÎ¿â±È½ÏÇ¿´ó¡£
 *QtÖ§³ÖC++±àĞ´£¬ÔËĞĞĞ§ÂÊÏà¶Ô½Ï¸ß¡£
@@ -27,5 +30,6 @@ QtMusicÊÇ»ùÓÚQt C++ÊµÏÖµÄ£¬±àÒëºóÖ§³Ö¿çÆ½Ì¨ÔËĞĞ¡£Ô¤¼Æ½«°üº¬¸èÇú²¥·Å¡¢¸èµ¥¹ÜÀí¡¢¸
 ![image](https://github.com/AndyQsmart/QtMusic-1.0/blob/master/readme_picture/pic1.png)
 ![image](https://github.com/AndyQsmart/QtMusic-1.0/blob/master/readme_picture/pic2.png)
 ![image](https://github.com/AndyQsmart/QtMusic-1.0/blob/master/readme_picture/pic3.png)
+![image](https://github.com/AndyQsmart/QtMusic-1.0/blob/master/readme_picture/pic4.png)
 
 

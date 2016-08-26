@@ -71,7 +71,7 @@ SearchList::SearchList(QWidget *parent)
     setSelectionBehavior(QAbstractItemView::SelectRows);//设置选中一行
     setEditTriggers(QAbstractItemView::NoEditTriggers);//设置不可修改
     setShowGrid(false);//格子线不显示
-    //verticalHeader()->setVisible(false);
+    verticalHeader()->setVisible(false);
     horizontalHeader()->setVisible(false);
     setFocusPolicy(Qt::NoFocus);
     horizontalHeader()->setHighlightSections(false);
@@ -81,7 +81,7 @@ SearchList::SearchList(QWidget *parent)
     MyMenu *listMenu = new MyMenu(this);
     QAction *addToCurrentList = new QAction("添加到当前列表", listMenu);
     listMenu->addAction(addToCurrentList);
-    //connect(this, SIGNAL(rightClicked()), listMenu, SLOT(menuVisiable()));
+    connect(this, SIGNAL(rightClicked()), listMenu, SLOT(menuVisiable()));
 }
 
 void SearchList::addSong(const QString &name, const QString &artist, const QString &length)
