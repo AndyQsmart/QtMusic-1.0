@@ -15,9 +15,9 @@ public slots:
     void setPlayMode(int mode);
 
 signals:
-    showWindow();
+    void showWindow();
     void setMode(int mode);
-    quit();
+    void quit();
 
 private slots:
     void trayIconClicked(QSystemTrayIcon::ActivationReason reason);
