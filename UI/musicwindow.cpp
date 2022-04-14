@@ -159,7 +159,7 @@ void MusicWindow::playerStateChanged(int state)
 
 void MusicWindow::musicChanged(QString listName, int index)
 {
-    qDebug() << "music changed" << endl;
+    qDebug() << "MusicWindow.musicChanged:" << Qt::endl;
     QString artist = player->getArtist();
     bottomBar->setMusicTitle(Data::getMusicName(listName, index));
     musicPage->removeHighLight();
@@ -170,13 +170,15 @@ void MusicWindow::musicChanged(QString listName, int index)
     //处理歌词
     //先对数据库查询歌词
     QString dir = Data::getMusicDir(listName, index);
+    qDebug() << "MusicWindow.musicChanged: music dir:" << dir << Qt::endl;
     int len = dir.length();
-    while (dir.at(len-1) != '.')
+    while (len > 1 && dir.at(len-1) != '.')
     {
         dir.remove(len-1, 1);
         len--;
     }
     dir = dir+"lrc";
+    qDebug() << "MusicWindow.musicChanged: lyric dir" << dir << Qt::endl;
     lyricLabel->getFromFile(dir);
 }
 
